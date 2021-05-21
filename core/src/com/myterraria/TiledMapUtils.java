@@ -78,7 +78,7 @@ public class TiledMapUtils{
     }
 
     private static int gtd(TiledMap map,int l,int x,int y,int t){
-        if(x>=0 && x<map.layer(l).width-1 && y>=0 && y<map.layer(l).height-1){
+        if(x>=0 && x<map.layer(l).width && y>=0 && y<map.layer(l).height){
             if(t==4)
                 return -3;
             int gt=map.getTileId(l,x,y);

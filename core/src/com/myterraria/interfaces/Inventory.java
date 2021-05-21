@@ -1,11 +1,10 @@
-package com.myterraria;
+package com.myterraria.interfaces;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import engine.Assets;
 import engine.Camera2D;
 
-public class Inventory{
-
+public class Inventory implements Interface{
 
     public int cell_size;
     public int width,height;
@@ -42,6 +41,5 @@ public class Inventory{
     public void setItem(ItemStack item,int x,int y){
         items[x][y]=item;
     }
-
 
 }

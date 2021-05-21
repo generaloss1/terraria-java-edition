@@ -52,10 +52,10 @@ public class TMLayer implements Serializable{
 			x=0;
 		if(y<0)
 			y=0;
-		if(x>=width)
-			x=width-1;
-		if(y>=height)
-			y=height-1;
+		if(x>width)
+			x=width;
+		if(y>height)
+			y=height;
 		return new Vector2i(x,y);
 	}
 
@@ -66,10 +66,10 @@ public class TMLayer implements Serializable{
 			x=0;
 		if(y<0)
 			y=0;
-		if(x>=width)
-			x=width-1;
-		if(y>=height)
-			y=height-1;
+		if(x>width)
+			x=width;
+		if(y>height)
+			y=height;
 		return new Vector2i(x,y);
 	}
 
@@ -80,10 +80,10 @@ public class TMLayer implements Serializable{
 			x=0;
 		if(y<0)
 			y=0;
-		if(x>=width)
-			x=width-1;
-		if(y>=height)
-			y=height-1;
+		if(x>width)
+			x=width;
+		if(y>height)
+			y=height;
 		return new Vector2i(x,y);
 	}
 
@@ -94,10 +94,10 @@ public class TMLayer implements Serializable{
 			x=0;
 		if(y<0)
 			y=0;
-		if(x>=width)
-			x=width-1;
-		if(y>=height)
-			y=height-1;
+		if(x>width)
+			x=width;
+		if(y>height)
+			y=height;
 		return new Vector2i(x,y);
 	}
 
@@ -110,10 +110,10 @@ public class TMLayer implements Serializable{
 			x=0;
 		if(y<0)
 			y=0;
-		if(x>=width)
-			x=width-1;
-		if(y>=height)
-			y=height-1;
+		if(x>width)
+			x=width;
+		if(y>height)
+			y=height;
 		return new Vector2i(x,y);
 	}
 
@@ -124,10 +124,10 @@ public class TMLayer implements Serializable{
 			x=0;
 		if(y<0)
 			y=0;
-		if(x>=width)
-			x=width-1;
-		if(y>=height)
-			y=height-1;
+		if(x>width)
+			x=width;
+		if(y>height)
+			y=height;
 		return new Vector2i(x,y);
 	}
 
@@ -138,10 +138,10 @@ public class TMLayer implements Serializable{
 			x=0;
 		if(y<0)
 			y=0;
-		if(x>=width)
-			x=width-1;
-		if(y>=height)
-			y=height-1;
+		if(x>width)
+			x=width;
+		if(y>height)
+			y=height;
 		return new Vector2i(x,y);
 	}
 
@@ -152,10 +152,10 @@ public class TMLayer implements Serializable{
 			x=0;
 		if(y<0)
 			y=0;
-		if(x>=width)
-			x=width-1;
-		if(y>=height)
-			y=height-1;
+		if(x>width)
+			x=width;
+		if(y>height)
+			y=height;
 		return new Vector2i(x,y);
 	}
 

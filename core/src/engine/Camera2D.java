@@ -9,6 +9,8 @@ public class Camera2D{
 
 	public OrthographicCamera cam;
 	public float size,x,y,angle,width,height;
+	private int windowModeWidth,windowModeHeight;
+	public boolean fullscreen;
 
 
 
@@ -46,6 +48,22 @@ public class Camera2D{
 		cam=new OrthographicCamera();
 		configure(size);
 		this.size=size;
+	}
+
+	public void fullScreen(boolean fs){
+		if(fs){
+			if(!fullscreen){
+				Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+				fullscreen=true;
+				windowModeWidth=Math.round(width);
+				windowModeHeight=Math.round(height);
+			}
+		}else{
+			if(fullscreen){
+				Gdx.graphics.setWindowedMode(windowModeWidth,windowModeHeight);
+				fullscreen=false;
+			}
+		}
 	}
 
 	public void rotate(float a){

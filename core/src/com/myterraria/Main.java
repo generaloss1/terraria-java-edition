@@ -7,12 +7,16 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.myterraria.interfaces.Interface;
+import com.myterraria.interfaces.Inventory;
+import com.myterraria.interfaces.ItemStack;
+import com.myterraria.interfaces.ToolBar;
 import engine.Assets;
 import engine.Camera2D;
+import engine.Mouse;
 import engine.Timer;
 import engine.math.Maths;
 import engine.math.vectors.Vector2f;
-import engine.tiledmap.Tile;
 import engine.tiledmap.TileManager;
 import engine.tiledmap.TiledMap;
 
@@ -32,20 +36,23 @@ public class Main implements ApplicationListener{
 	public ShaderProgram shader,shader2;
 	public float time=0;
 
-	public Inventory inventory;
+	public ToolBar toolBar;
 
 	public static Timer timer;
 	public int minutes,hours;
+
+	public Mouse mouse;
 
 
 
 	public void create(){
 		sb=new SpriteBatch();
 		cam=new Camera2D();
+		mouse=new Mouse();
 
-		int map_width=1000;
-		int map_height=200;
-		int surface=100;
+		int map_width=54;
+		int map_height=54;
+		int surface=27;
 
 		tileManager=new TileManager();
 		map=new TiledMap();
@@ -55,23 +62,35 @@ public class Main implements ApplicationListener{
 		map.setView(2,4);
 		map.setView(1,4);
 		map.setView(3,4);
+		WorldGenerator.generate(map,seed,surface);
+		WorldGenerator.isGenerated=true;
+		//map.load("/home/user/Downloads/world.wld");
 
 		cam.translatePosition(map_width/2f*tile_pixel_size,surface*tile_pixel_size);
+		cam.fullScreen(true);
 
 		LoadResources.loadResources();
 		LoadResources.defineTiles(tileManager);
 
-		WorldGenerator.generate(map,seed,surface);
+
+
 
 		RecursiveLights.init(map);
 
 		ShaderProgram.pedantic=false;
-		shader=new ShaderProgram(Gdx.files.internal("shader.vert"),Gdx.files.internal("shader.frag"));
+		shader=new ShaderProgram(Gdx.files.internal("shaders/shader.vert"),Gdx.files.internal("shaders/shader.frag"));
 		System.out.println(shader.isCompiled()?"compiled":"compile error: "+shader.getLog());
-		shader2=new ShaderProgram(Gdx.files.internal("inv_shader.vert"),Gdx.files.internal("inv_shader.frag"));
+		shader2=new ShaderProgram(Gdx.files.internal("shaders/inv_shader.vert"),Gdx.files.internal("shaders/inv_shader.frag"));
 		System.out.println(shader2.isCompiled()?"compiled":"compile error: "+shader2.getLog());
 
-		inventory=new Inventory(cam,10,5);
+		toolBar=new ToolBar(cam,10);
+		toolBar.setItem(new ItemStack(1),0);
+		toolBar.setItem(new ItemStack(2),1);
+		toolBar.setItem(new ItemStack(3),2);
+		toolBar.setItem(new ItemStack(4),3);
+		toolBar.setItem(new ItemStack(5),4);
+		toolBar.setItem(new ItemStack(6),5);
+		toolBar.setItem(new ItemStack(7),6);
 
 		timer=new Timer();
 
@@ -100,7 +119,7 @@ public class Main implements ApplicationListener{
 			map.draw(tileManager,sb,cam);
 			sb.setShader(null);
 
-			//inventory.draw(sb,cam);
+			toolBar.draw(sb,cam);
 
 			RecursiveLights.update(map,cam);
 
@@ -122,7 +141,7 @@ public class Main implements ApplicationListener{
 
 				BitmapFont font2=Assets.getTTF("font2");
 				font2.setColor(1,1,1,timer1/200f);
-				font2.draw(sb,"F3 for more info; 1/2/3/4/6/0 + LMB;",cam.x+20,cam.y+20+font2.getLineHeight());
+				font2.draw(sb,"F3 for more info; 1/2/3/4/6/0 + LMB for set tile;",cam.x+20,cam.y+20+font2.getLineHeight());
 			}
 		}else{
 			BitmapFont font=Assets.getTTF("font1");
@@ -184,22 +203,22 @@ public class Main implements ApplicationListener{
 			sb.setShader(null);
 		}
 
+		if(Gdx.input.isKeyJustPressed(Input.Keys.F11))
+			cam.fullScreen(!cam.fullscreen);
+
 		if(Gdx.input.isTouched()){
 
-			if(Gdx.input.isKeyPressed(Input.Keys.NUM_0)){
+			if(mouse.left){
 				if(!TiledMapUtils.setTile(map,cam,3,tx,ty,0))
 					if(!TiledMapUtils.setTile(map,cam,2,tx,ty,0))
 						TiledMapUtils.setTile(map,cam,1,tx,ty,0);
-			}else if(Gdx.input.isKeyPressed(Input.Keys.NUM_4))
-				TiledMapUtils.setTile(map,cam,3,tx,ty,4);
-			else if(Gdx.input.isKeyPressed(Input.Keys.NUM_1))
-				TiledMapUtils.setTile(map,cam,3,tx,ty,1);
-			else if(Gdx.input.isKeyPressed(Input.Keys.NUM_6))
-				TiledMapUtils.setTile(map,cam,3,tx,ty,6);
-			else if(Gdx.input.isKeyPressed(Input.Keys.NUM_2))
-				TiledMapUtils.setTile(map,cam,3,tx,ty,2);
-			else if(Gdx.input.isKeyPressed(Input.Keys.NUM_3))
-				TiledMapUtils.setTile(map,cam,3,tx,ty,3);
+
+			}
+			if(mouse.right){
+				ItemStack item=toolBar.getSelectedItem();
+				if(item!=null)
+					TiledMapUtils.setTile(map,cam,3,tx,ty,item.id);
+			}
 		}
 
 		int cam_speed=10;

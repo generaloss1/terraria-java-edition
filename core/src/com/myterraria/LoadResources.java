@@ -3,6 +3,8 @@ package com.myterraria;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.myterraria.interfaces.FrameBuffer;
+import com.myterraria.interfaces.ItemManager;
 import engine.Assets;
 import engine.tiledmap.TileManager;
 
@@ -14,30 +16,76 @@ public class LoadResources{
         pixmap.fill();
         Assets.loadTexture(new Texture(pixmap),"black_pixel");
 
-        Assets.loadTTF("FiraCode.ttf","font1",48,new Color(1,1,1,1));
-        Assets.loadTTF("FiraCodeBold.ttf","font2",32,new Color(0.5f,0.5f,0.5f,1));
+        //FONTS
 
-        Assets.loadTexture("Background_0.png","Background_0");
+        Assets.loadTTF("fonts/FiraCode.ttf","font1",48,new Color(1,1,1,1));
+        Assets.loadTTF("fonts/FiraCodeBold.ttf","font2",32,new Color(0.5f,0.5f,0.5f,1));
+        Assets.loadTTF("fonts/andy_bold.ttf","font3",32,new Color(0.5f,0.5f,0.5f,1));
+        Assets.loadTTF("fonts/minecraft.ttf","font4",32,new Color(0.5f,0.5f,0.5f,1));
+        Assets.loadTTF("fonts/standart.ttf","font5",32,new Color(0.5f,0.5f,0.5f,1));
 
-        Assets.loadTexture("Inventory_Back.png","Inventory_Back");
-        Assets.loadTexture("Inventory_Back7.png","Inventory_Back7");
-        Assets.loadTexture("Inventory_Back10.png","Inventory_Back10");
-        Assets.loadTexture("Inventory_Back14.png","Inventory_Back14");
-        Assets.loadTexture("Inventory_Back17.png","Inventory_Back17");
+        //BACKGROUNDS
 
-        Assets.loadTexture("Tiles_0.png","Tiles_0");
-        Assets.loadTexture("Tiles_1.png","Tiles_1");
-        Assets.loadTexture("Tiles_2.png","Tiles_2");
-        Assets.loadTexture("Tiles_3.png","Tiles_3");
-        Assets.loadTexture("Tiles_4.png","Tiles_4");
-        Assets.loadTexture("Tiles_5.png","Tiles_5");
-        Assets.loadTexture("Wall_1.png","Wall_1");
-        Assets.loadTexture("Wall_2.png","Wall_2");
-        Assets.loadTexture("Tree_Branches_6.png","Tree_Branches_6");
-        Assets.loadTexture("Tree_Tops_6.png","Tree_Tops_6");
+        Assets.loadTexture("background/Background_0.png","Background_0");
+
+        //UI
+
+        Assets.loadTexture("ui/Inventory_Back.png","Inventory_Back");
+        Assets.loadTexture("ui/Inventory_Back7.png","Inventory_Back7");
+        Assets.loadTexture("ui/Inventory_Back10.png","Inventory_Back10");
+        Assets.loadTexture("ui/Inventory_Back14.png","Inventory_Back14");
+        Assets.loadTexture("ui/Inventory_Back17.png","Inventory_Back17");
+        Assets.loadTexture("ui/Cursor_0.png","Cursor_0");
+
+        //ITEMS
+
+        Assets.loadTexture("items/Item_0.png","Item_0");
+        Assets.loadTexture("items/Item_2.png","Item_2");
+        Assets.loadTexture("items/Item_3.png","Item_3");
+        Assets.loadTexture("items/Item_8.png","Item_8");
+        Assets.loadTexture("items/Item_9.png","Item_9");
+        Assets.loadTexture("items/Item_26.png","Item_26");
+        Assets.loadTexture("items/Item_30.png","Item_30");
+        Assets.loadTexture("items/Item_121.png","Item_121");
+        Assets.loadTexture("items/Item_520.png","Item_520");
+        Assets.loadTexture("items/Item_521.png","Item_521");
+        Assets.loadTexture("items/Item_547.png","Item_547");
+        Assets.loadTexture("items/Item_548.png","Item_548");
+        Assets.loadTexture("items/Item_549.png","Item_549");
+        Assets.loadTexture("items/Item_575.png","Item_575");
+        Assets.loadTexture("items/Item_757.png","Item_757");
+        Assets.loadTexture("items/Item_1326.png","Item_1326");
+        Assets.loadTexture("items/Item_2763.png","Item_2763");
+        Assets.loadTexture("items/Item_2764.png","Item_2764");
+        Assets.loadTexture("items/Item_2765.png","Item_2765");
+        Assets.loadTexture("items/Item_2786.png","Item_2786");
+        Assets.loadTexture("items/Item_4956.png","Item_4956");
+        Assets.loadTexture("items/Item_5005.png","Item_5005");
+
+        //TILES
+
+        Assets.loadTexture("tiles/Tiles_0.png","Tiles_0");
+        Assets.loadTexture("tiles/Tiles_1.png","Tiles_1");
+        Assets.loadTexture("tiles/Tiles_2.png","Tiles_2");
+        Assets.loadTexture("tiles/Tiles_3.png","Tiles_3");
+        Assets.loadTexture("tiles/Tiles_4.png","Tiles_4");
+        Assets.loadTexture("tiles/Tiles_5.png","Tiles_5");
+        Assets.loadTexture("tiles/Tiles_30.png","Tiles_30");
+        Assets.loadTexture("tiles/Wall_1.png","Wall_1");
+        Assets.loadTexture("tiles/Wall_2.png","Wall_2");
+        Assets.loadTexture("tiles/Tree_Branches_0.png","Tree_Branches_0");
+        Assets.loadTexture("tiles/Tree_Branches_6.png","Tree_Branches_6");
+        Assets.loadTexture("tiles/Tree_Tops_0.png","Tree_Tops_0");
+        Assets.loadTexture("tiles/Tree_Tops_6.png","Tree_Tops_6");
+
+        //
+
     }
 
     public static void defineTiles(TileManager tileManager){
+
+        ItemManager.defineItem(0,new FrameBuffer().addFrame("Item_0"));
+
         tileManager.addTileDataReg(1,0,"Tiles_2",18*9,18*3,16,16);
         tileManager.addTileDataReg(1,1,"Tiles_2",18*9,18*0,16,16);
         tileManager.addTileDataReg(1,2,"Tiles_2",18*6,18*4,16,16);
@@ -141,15 +189,15 @@ public class LoadResources{
         tileManager.addTileDataReg(5,22,"Tiles_5",22*6,22*6,20,20,10f/8,10f/8,-1f/8,-2f/8);
         tileManager.addTileDataReg(5,23,"Tiles_5",22*7,22*6,20,20,10f/8,10f/8,-1f/8,-2f/8);
         tileManager.addTileDataReg(5,24,"Tiles_5",22*0,22*9,20,20,10f/8,10f/8,-1f/8,-2f/8);
-        tileManager.addTileDataReg(5,25,"Tree_Tops_6",82*0,80*0,80,80,80f/16,80f/16,-32f/16,0);
-        tileManager.addTileDataReg(5,26,"Tree_Tops_6",82*1,80*0,80,80,80f/16,80f/16,-32f/16,0);
-        tileManager.addTileDataReg(5,27,"Tree_Tops_6",82*2,80*0,80,80,80f/16,80f/16,-32f/16,0);
-        tileManager.addTileDataReg(5,28,"Tree_Branches_6",42*0,42*0,40,40,20f/8,20f/8,-12f/8,-6f/8);
-        tileManager.addTileDataReg(5,29,"Tree_Branches_6",42*1,42*0,40,40,20f/8,20f/8,-0f/8,-6f/8);
-        tileManager.addTileDataReg(5,30,"Tree_Branches_6",42*0,42*1,40,40,20f/8,20f/8,-12f/8,-6f/8);
-        tileManager.addTileDataReg(5,31,"Tree_Branches_6",42*1,42*1,40,40,20f/8,20f/8,-0f/8,-6f/8);
-        tileManager.addTileDataReg(5,32,"Tree_Branches_6",42*0,42*2,40,40,20f/8,20f/8,-12f/8,-6f/8);
-        tileManager.addTileDataReg(5,33,"Tree_Branches_6",42*1,42*2,40,40,20f/8,20f/8,-0f/8,-6f/8);
+        tileManager.addTileDataReg(5,25,"Tree_Tops_0",82*0,80*0,80,80,80f/16,80f/16,-32f/16,0);
+        tileManager.addTileDataReg(5,26,"Tree_Tops_0",82*1,80*0,80,80,80f/16,80f/16,-32f/16,0);
+        tileManager.addTileDataReg(5,27,"Tree_Tops_0",82*2,80*0,80,80,80f/16,80f/16,-32f/16,0);
+        tileManager.addTileDataReg(5,28,"Tree_Branches_0",42*0,42*0,40,40,20f/8,20f/8,-12f/8,-6f/8);
+        tileManager.addTileDataReg(5,29,"Tree_Branches_0",42*1,42*0,40,40,20f/8,20f/8,-0f/8,-6f/8);
+        tileManager.addTileDataReg(5,30,"Tree_Branches_0",42*0,42*1,40,40,20f/8,20f/8,-12f/8,-6f/8);
+        tileManager.addTileDataReg(5,31,"Tree_Branches_0",42*1,42*1,40,40,20f/8,20f/8,-0f/8,-6f/8);
+        tileManager.addTileDataReg(5,32,"Tree_Branches_0",42*0,42*2,40,40,20f/8,20f/8,-12f/8,-6f/8);
+        tileManager.addTileDataReg(5,33,"Tree_Branches_0",42*1,42*2,40,40,20f/8,20f/8,-0f/8,-6f/8);
 
 
     }
