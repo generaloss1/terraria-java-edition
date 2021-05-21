@@ -68,6 +68,7 @@ public class Main implements ApplicationListener{
 
 		cam.translatePosition(map_width/2f*tile_pixel_size,surface*tile_pixel_size);
 		cam.fullScreen(true);
+		cam.resize();
 
 		LoadResources.loadResources();
 		LoadResources.defineTiles(tileManager);
