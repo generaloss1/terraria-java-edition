@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,6 +73,29 @@ public class Assets{
         for(String id:ttfs_ids)
             ttfs.get(id).dispose();
         ttfs.clear();
+    }
+
+
+
+    public static HashMap<String,ShaderProgram> shaders=new HashMap<>();
+    public static List<String> shaders_ids=new ArrayList<>();
+
+    public static void loadShader(String path,String id){
+        ShaderProgram.pedantic=false;
+        ShaderProgram shader=new ShaderProgram(Gdx.files.internal(path+".vert"),Gdx.files.internal(path+".frag"));
+        System.out.println(shader.isCompiled()?"compiled":"compile error: "+shader.getLog());
+        shaders.put(id,shader);
+        shaders_ids.add(id);
+    }
+
+    public static ShaderProgram getShader(String id){
+        return shaders.get(id);
+    }
+
+    public static void disposeShaders(){
+        for(String id:shaders_ids)
+            shaders.get(id).dispose();
+        shaders.clear();
     }
 
 

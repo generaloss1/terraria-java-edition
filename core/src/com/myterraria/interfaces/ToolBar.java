@@ -3,8 +3,10 @@ package com.myterraria.interfaces;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import engine.Assets;
 import engine.Camera2D;
+import engine.tiledmap.TileManager;
 
 public class ToolBar implements Interface{
 
@@ -38,6 +40,18 @@ public class ToolBar implements Interface{
             sb.setColor(1,1,1,0.9f);
             sb.draw(Assets.getTexture("Inventory_Back"+(i==selected_cell_position?"14":"")),cam.x+x+cell_size*i+offset*i,cam.y+y,cell_size,cell_size);
             sb.setColor(1,1,1,1);
+            ItemStack itemStack=getItem(i);
+            if(itemStack!=null){
+                Item item=ItemManager.getItem(itemStack.id);
+                if(item!=null){
+                    FrameBuffer fb=item.frameBuffer;
+                    if(fb!=null){
+                        TextureRegion texture=fb.getFrame(0);
+                        if(texture!=null)
+                            sb.draw(texture,cam.x+x+cell_size*i+offset*i,cam.y+y,cell_size,cell_size);
+                    }
+                }
+            }
         }
     }
 
@@ -47,6 +61,10 @@ public class ToolBar implements Interface{
 
     public ItemStack getSelectedItem(){
         return items[selected_cell_position];
+    }
+
+    public ItemStack getItem(int position){
+        return items[position];
     }
 
 }

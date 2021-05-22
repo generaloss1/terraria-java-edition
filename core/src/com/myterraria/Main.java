@@ -7,10 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.myterraria.interfaces.Interface;
-import com.myterraria.interfaces.Inventory;
-import com.myterraria.interfaces.ItemStack;
-import com.myterraria.interfaces.ToolBar;
+import com.myterraria.interfaces.*;
 import engine.Assets;
 import engine.Camera2D;
 import engine.Mouse;
@@ -33,7 +30,6 @@ public class Main implements ApplicationListener{
 	public static int tile_pixel_size=32;//21,32,43
 	public long seed=Maths.randomSeed(8);
 
-	public ShaderProgram shader,shader2;
 	public float time=0;
 
 	public ToolBar toolBar;
@@ -68,30 +64,21 @@ public class Main implements ApplicationListener{
 
 		cam.translatePosition(map_width/2f*tile_pixel_size,surface*tile_pixel_size);
 		cam.fullScreen(true);
-		cam.resize();
 
 		LoadResources.loadResources();
 		LoadResources.defineTiles(tileManager);
 
-
-
-
 		RecursiveLights.init(map);
 
-		ShaderProgram.pedantic=false;
-		shader=new ShaderProgram(Gdx.files.internal("shaders/shader.vert"),Gdx.files.internal("shaders/shader.frag"));
-		System.out.println(shader.isCompiled()?"compiled":"compile error: "+shader.getLog());
-		shader2=new ShaderProgram(Gdx.files.internal("shaders/inv_shader.vert"),Gdx.files.internal("shaders/inv_shader.frag"));
-		System.out.println(shader2.isCompiled()?"compiled":"compile error: "+shader2.getLog());
-
 		toolBar=new ToolBar(cam,10);
-		toolBar.setItem(new ItemStack(1),0);
-		toolBar.setItem(new ItemStack(2),1);
-		toolBar.setItem(new ItemStack(3),2);
-		toolBar.setItem(new ItemStack(4),3);
-		toolBar.setItem(new ItemStack(5),4);
-		toolBar.setItem(new ItemStack(6),5);
-		toolBar.setItem(new ItemStack(7),6);
+		toolBar.setItem(new ItemStack(2),0);
+		toolBar.setItem(new ItemStack(3),1);
+		toolBar.setItem(new ItemStack(8),2);
+		toolBar.setItem(new ItemStack(9),3);
+		toolBar.setItem(new ItemStack(26),4);
+		toolBar.setItem(new ItemStack(30),5);
+		toolBar.setItem(new ItemStack(121),6);
+		toolBar.setItem(new ItemStack(520),7);
 
 		timer=new Timer();
 
@@ -115,6 +102,7 @@ public class Main implements ApplicationListener{
 			//sb.setColor(1,1,1,1);
 
 			time+=delt;
+			ShaderProgram shader=Assets.getShader("shader");
 			shader.setUniformf("timer1",time);
 			//sb.setShader(shader);
 			map.draw(tileManager,sb,cam);
@@ -192,7 +180,8 @@ public class Main implements ApplicationListener{
 			String text5="Tile x: "+tx+", y: "+ty;
 			String text6="Game time: "+hours+":"+minutes;
 
-			sb.setShader(shader2);
+
+			sb.setShader(Assets.getShader("inv_shader"));
 
 			font.draw(sb,text1,cam.x+20,cam.y+cam.height-font.getCache().addText(text1,0,0).height);
 			font.draw(sb,text2,cam.x+20,cam.y+cam.height-font.getCache().addText(text2,0,0).height-40);
@@ -218,7 +207,7 @@ public class Main implements ApplicationListener{
 			if(mouse.right){
 				ItemStack item=toolBar.getSelectedItem();
 				if(item!=null)
-					TiledMapUtils.setTile(map,cam,3,tx,ty,item.id);
+					TiledMapUtils.setTile(map,cam,3,tx,ty,(Integer)ItemManager.getItem(item.id).attributes.get(0).getValue());
 			}
 		}
 

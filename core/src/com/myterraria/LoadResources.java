@@ -4,9 +4,13 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.myterraria.interfaces.FrameBuffer;
+import com.myterraria.interfaces.Item;
 import com.myterraria.interfaces.ItemManager;
+import com.myterraria.interfaces.Value;
 import engine.Assets;
 import engine.tiledmap.TileManager;
+
+import java.util.ArrayList;
 
 public class LoadResources{
 
@@ -78,13 +82,38 @@ public class LoadResources{
         Assets.loadTexture("tiles/Tree_Tops_0.png","Tree_Tops_0");
         Assets.loadTexture("tiles/Tree_Tops_6.png","Tree_Tops_6");
 
-        //
+        //SHADERS
+
+        Assets.loadShader("shaders/inv_shader","inv_shader");
+        Assets.loadShader("shaders/shader","shader");
 
     }
 
     public static void defineTiles(TileManager tileManager){
 
-        ItemManager.defineItem(0,new FrameBuffer().addFrame("Item_0"));
+        //ATTRIBUTES 1 - tileid
+
+        ItemManager.defineItem(0,new Item(0,new FrameBuffer().addFrame("Item_0")));
+        ItemManager.defineItem(2,new Item(2,new FrameBuffer().addFrame("Item_2")).addAttribute(new Value<>(2)));
+        ItemManager.defineItem(3,new Item(3,new FrameBuffer().addFrame("Item_3")).addAttribute(new Value<>(3)));
+        ItemManager.defineItem(8,new Item(8,new FrameBuffer().addFrame("Item_8")).addAttribute(new Value<>(4)));
+        ItemManager.defineItem(9,new Item(9,new FrameBuffer().addFrame("Item_9")).addAttribute(new Value<>(30)));
+        ItemManager.defineItem(26,new Item(26,new FrameBuffer().addFrame("Item_26")).addAttribute(new Value<>(6)));
+        ItemManager.defineItem(30,new Item(30,new FrameBuffer().addFrame("Item_30")).addAttribute(new Value<>(8)));
+        ItemManager.defineItem(121,new Item(121,new FrameBuffer().addFrame("Item_121")).addAttribute(new Value<>(0)));
+        ItemManager.defineItem(520,new Item(520,new FrameBuffer().addFrame("Item_520")).addAttribute(new Value<>(0)));
+        ItemManager.defineItem(521,new Item(521,new FrameBuffer().addFrame("Item_521")).addAttribute(new Value<>(0)));
+        ItemManager.defineItem(547,new Item(547,new FrameBuffer().addFrame("Item_547")).addAttribute(new Value<>(0)));
+        ItemManager.defineItem(548,new Item(548,new FrameBuffer().addFrame("Item_548")).addAttribute(new Value<>(0)));
+        ItemManager.defineItem(549,new Item(549,new FrameBuffer().addFrame("Item_549")).addAttribute(new Value<>(0)));
+        ItemManager.defineItem(575,new Item(575,new FrameBuffer().addFrame("Item_575")).addAttribute(new Value<>(0)));
+        ItemManager.defineItem(1326,new Item(1326,new FrameBuffer().addFrame("Item_1326")).addAttribute(new Value<>(0)));
+        ItemManager.defineItem(2763,new Item(2763,new FrameBuffer().addFrame("Item_2763")).addAttribute(new Value<>(0)));
+        ItemManager.defineItem(2764,new Item(2764,new FrameBuffer().addFrame("Item_2764")).addAttribute(new Value<>(0)));
+        ItemManager.defineItem(2765,new Item(2765,new FrameBuffer().addFrame("Item_2765")).addAttribute(new Value<>(0)));
+        ItemManager.defineItem(2786,new Item(2786,new FrameBuffer().addFrame("Item_2786")).addAttribute(new Value<>(0)));
+        ItemManager.defineItem(4956,new Item(4956,new FrameBuffer().addFrame("Item_4956")).addAttribute(new Value<>(0)));
+        ItemManager.defineItem(5005,new Item(5005,new FrameBuffer().addFrame("Item_5005")).addAttribute(new Value<>(0)));
 
         tileManager.addTileDataReg(1,0,"Tiles_2",18*9,18*3,16,16);
         tileManager.addTileDataReg(1,1,"Tiles_2",18*9,18*0,16,16);
@@ -137,6 +166,23 @@ public class LoadResources{
         tileManager.addTileDataReg(3,14,"Tiles_1",18*1,18*2,16,16);
         tileManager.addTileDataReg(3,15,"Tiles_1",18*1,18*4,16,16);
 
+        tileManager.addTileDataReg(30,0,"Tiles_30",18*9,18*3,16,16);
+        tileManager.addTileDataReg(30,1,"Tiles_30",18*9,18*0,16,16);
+        tileManager.addTileDataReg(30,2,"Tiles_30",18*6,18*4,16,16);
+        tileManager.addTileDataReg(30,3,"Tiles_30",18*12,18*0,16,16);
+        tileManager.addTileDataReg(30,4,"Tiles_30",18*6,18*0,16,16);
+        tileManager.addTileDataReg(30,5,"Tiles_30",18*0,18*3,16,16);
+        tileManager.addTileDataReg(30,6,"Tiles_30",18*1,18*0,16,16);
+        tileManager.addTileDataReg(30,7,"Tiles_30",18*1,18*3,16,16);
+        tileManager.addTileDataReg(30,8,"Tiles_30",18*5,18*0,16,16);
+        tileManager.addTileDataReg(30,9,"Tiles_30",18*0,18*0,16,16);
+        tileManager.addTileDataReg(30,10,"Tiles_30",18*1,18*1,16,16);
+        tileManager.addTileDataReg(30,11,"Tiles_30",18*4,18*0,16,16);
+        tileManager.addTileDataReg(30,12,"Tiles_30",18*6,18*3,16,16);
+        tileManager.addTileDataReg(30,13,"Tiles_30",18*0,18*4,16,16);
+        tileManager.addTileDataReg(30,14,"Tiles_30",18*1,18*2,16,16);
+        tileManager.addTileDataReg(30,15,"Tiles_30",18*1,18*4,16,16);
+
         for(int i=0; i<45; i++)
             tileManager.addTileDataReg(7,i,"Tiles_3",18*i,22*0,16,20,1,10f/8,0,-2f/8);
 
@@ -163,6 +209,23 @@ public class LoadResources{
         tileManager.addTileDataReg(6,13,"Wall_2",36*0,36*4,32,32,2,2,-1f/2,-1f/2);
         tileManager.addTileDataReg(6,14,"Wall_2",36*1,36*2,32,32,2,2,-1f/2,-1f/2);
         tileManager.addTileDataReg(6,15,"Wall_2",36*1,36*4,32,32,2,2,-1f/2,-1f/2);
+
+        tileManager.addTileDataReg(8,0,"Wall_1",36*9,36*3,32,32,2,2,-1f/2,-1f/2);
+        tileManager.addTileDataReg(8,1,"Wall_1",36*9,36*0,32,32,2,2,-1f/2,-1f/2);
+        tileManager.addTileDataReg(8,2,"Wall_1",36*6,36*4,32,32,2,2,-1f/2,-1f/2);
+        tileManager.addTileDataReg(8,3,"Wall_1",36*12,36*0,32,32,2,2,-1f/2,-1f/2);
+        tileManager.addTileDataReg(8,4,"Wall_1",36*6,36*0,32,32,2,2,-1f/2,-1f/2);
+        tileManager.addTileDataReg(8,5,"Wall_1",36*0,36*3,32,32,2,2,-1f/2,-1f/2);
+        tileManager.addTileDataReg(8,6,"Wall_1",36*1,36*0,32,32,2,2,-1f/2,-1f/2);
+        tileManager.addTileDataReg(8,7,"Wall_1",36*1,36*3,32,32,2,2,-1f/2,-1f/2);
+        tileManager.addTileDataReg(8,8,"Wall_1",36*5,36*0,32,32,2,2,-1f/2,-1f/2);
+        tileManager.addTileDataReg(8,9,"Wall_1",36*0,36*0,32,32,2,2,-1f/2,-1f/2);
+        tileManager.addTileDataReg(8,10,"Wall_1",36*1,36*1,32,32,2,2,-1f/2,-1f/2);
+        tileManager.addTileDataReg(8,11,"Wall_1",36*4,36*0,32,32,2,2,-1f/2,-1f/2);
+        tileManager.addTileDataReg(8,12,"Wall_1",36*6,36*3,32,32,2,2,-1f/2,-1f/2);
+        tileManager.addTileDataReg(8,13,"Wall_1",36*0,36*4,32,32,2,2,-1f/2,-1f/2);
+        tileManager.addTileDataReg(8,14,"Wall_1",36*1,36*2,32,32,2,2,-1f/2,-1f/2);
+        tileManager.addTileDataReg(8,15,"Wall_1",36*1,36*4,32,32,2,2,-1f/2,-1f/2);
 
         tileManager.addTileDataReg(5,0,"Tiles_5",22*0,22*0,20,20,10f/8,10f/8,-1f/8,-2f/8);
         tileManager.addTileDataReg(5,1,"Tiles_5",22*1,22*0,20,20,10f/8,10f/8,-1f/8,-2f/8);
