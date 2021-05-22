@@ -6,7 +6,8 @@ import com.badlogic.gdx.InputProcessor;
 
 public class Mouse implements InputProcessor{
 
-    public boolean left,right;
+    private boolean left,right;
+    private int scrolled;
 
     public Mouse(){
         Gdx.input.setInputProcessor(this);
@@ -46,6 +47,20 @@ public class Mouse implements InputProcessor{
         return false;
     }
 
+    public int scrolled(){
+        int amount=scrolled;
+        scrolled=0;
+        return amount;
+    }
+
+    public boolean isLeftPressed(){
+        return left;
+    }
+
+    public boolean isRightPressed(){
+        return right;
+    }
+
     public boolean touchDragged(int screenX,int screenY,int pointer){
         return false;
     }
@@ -55,7 +70,8 @@ public class Mouse implements InputProcessor{
     }
 
     public boolean scrolled(int amount){
-        return false;
+        scrolled=amount;
+        return true;
     }
 
 }

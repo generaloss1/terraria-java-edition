@@ -80,7 +80,7 @@ public class RecursiveLights{
             }
         color.set(1,1,1);
         for(int x=0; x<map.layer(l).width; x++)
-            for(int y=map.layer(l).height-1; y>0; y--)
+            for(int y=map.layer(l).height-1; y>-1; y--)
                 if((map.getTileId(1,x,y)!=0 || map.getTileId(3,x,y)!=0) && map.getTileId(3,x,y)!=4){
                     RecursiveLights.applyLightRec(map,3,x,y,6,24,1);
                     RecursiveLights.applyLightRec(map,1,x,y,6,24,1);
@@ -105,7 +105,7 @@ public class RecursiveLights{
             }
         color.set(1,1,1);
         for(int x=str.x; x<end.x; x++)
-            for(int y=map.layer(l).height-1; y>0; y--){
+            for(int y=map.layer(l).height-1; y>-1; y--){
                 boolean b=true;
                 for(int i=0; i<ignoreTilesU.length; i+=2)
                     if(map.getTileId(ignoreTilesU[i+1],x,y)==ignoreTilesU[i])

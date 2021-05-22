@@ -19,8 +19,8 @@ public class FrameBuffer{
         return this;
     }
 
-    public FrameBuffer addFrameReg(String texture,int w,int h,int x,int y){
-        frames.add(new TextureRegion(Assets.getTexture(texture),w,h,x,y));
+    public FrameBuffer addFrameReg(String texture,int x,int y,int w,int h){
+        frames.add(new TextureRegion(Assets.getTexture(texture),x,y,w,h));
         return this;
     }
 

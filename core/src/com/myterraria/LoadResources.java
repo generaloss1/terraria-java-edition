@@ -93,27 +93,28 @@ public class LoadResources{
 
         //ATTRIBUTES 1 - tileid
 
-        ItemManager.defineItem(0,new Item(0,new FrameBuffer().addFrame("Item_0")));
-        ItemManager.defineItem(2,new Item(2,new FrameBuffer().addFrame("Item_2")).addAttribute(new Value<>(2)));
-        ItemManager.defineItem(3,new Item(3,new FrameBuffer().addFrame("Item_3")).addAttribute(new Value<>(3)));
-        ItemManager.defineItem(8,new Item(8,new FrameBuffer().addFrame("Item_8")).addAttribute(new Value<>(4)));
-        ItemManager.defineItem(9,new Item(9,new FrameBuffer().addFrame("Item_9")).addAttribute(new Value<>(30)));
-        ItemManager.defineItem(26,new Item(26,new FrameBuffer().addFrame("Item_26")).addAttribute(new Value<>(6)));
-        ItemManager.defineItem(30,new Item(30,new FrameBuffer().addFrame("Item_30")).addAttribute(new Value<>(8)));
-        ItemManager.defineItem(121,new Item(121,new FrameBuffer().addFrame("Item_121")).addAttribute(new Value<>(0)));
-        ItemManager.defineItem(520,new Item(520,new FrameBuffer().addFrame("Item_520")).addAttribute(new Value<>(0)));
-        ItemManager.defineItem(521,new Item(521,new FrameBuffer().addFrame("Item_521")).addAttribute(new Value<>(0)));
-        ItemManager.defineItem(547,new Item(547,new FrameBuffer().addFrame("Item_547")).addAttribute(new Value<>(0)));
-        ItemManager.defineItem(548,new Item(548,new FrameBuffer().addFrame("Item_548")).addAttribute(new Value<>(0)));
-        ItemManager.defineItem(549,new Item(549,new FrameBuffer().addFrame("Item_549")).addAttribute(new Value<>(0)));
-        ItemManager.defineItem(575,new Item(575,new FrameBuffer().addFrame("Item_575")).addAttribute(new Value<>(0)));
-        ItemManager.defineItem(1326,new Item(1326,new FrameBuffer().addFrame("Item_1326")).addAttribute(new Value<>(0)));
-        ItemManager.defineItem(2763,new Item(2763,new FrameBuffer().addFrame("Item_2763")).addAttribute(new Value<>(0)));
-        ItemManager.defineItem(2764,new Item(2764,new FrameBuffer().addFrame("Item_2764")).addAttribute(new Value<>(0)));
-        ItemManager.defineItem(2765,new Item(2765,new FrameBuffer().addFrame("Item_2765")).addAttribute(new Value<>(0)));
-        ItemManager.defineItem(2786,new Item(2786,new FrameBuffer().addFrame("Item_2786")).addAttribute(new Value<>(0)));
-        ItemManager.defineItem(4956,new Item(4956,new FrameBuffer().addFrame("Item_4956")).addAttribute(new Value<>(0)));
-        ItemManager.defineItem(5005,new Item(5005,new FrameBuffer().addFrame("Item_5005")).addAttribute(new Value<>(0)));
+        ItemManager.defineItem(new Item(0,new FrameBuffer().addFrame("Item_0")));
+        ItemManager.defineItem(new Item(2,new FrameBuffer().addFrame("Item_2")).addAttribute(new Value<>(2)));
+        ItemManager.defineItem(new Item(3,new FrameBuffer().addFrame("Item_3")).addAttribute(new Value<>(3)));
+        ItemManager.defineItem(new Item(8,new FrameBuffer().addFrame("Item_8")).addAttribute(new Value<>(4)));
+        ItemManager.defineItem(new Item(9,new FrameBuffer().addFrame("Item_9")).addAttribute(new Value<>(30)));
+        ItemManager.defineItem(new Item(26,new FrameBuffer().addFrame("Item_26")).addAttribute(new Value<>(8)));
+        ItemManager.defineItem(new Item(30,new FrameBuffer().addFrame("Item_30")).addAttribute(new Value<>(6)));
+        ItemManager.defineItem(new Item(121,new FrameBuffer().addFrame("Item_121")).addAttribute(new Value<>(0)));
+        ItemManager.defineItem(new Item(520,new FrameBuffer().addFrameReg("Item_520",0,2+28*0,22,22).addFrameReg("Item_520",0,2+28*1,22,22).addFrameReg("Item_520",0,2+28*2,22,22).addFrameReg("Item_520",0,2+28*3,22,22)).addAttribute(new Value<>(0)));
+        ItemManager.defineItem(new Item(521,new FrameBuffer().addFrameReg("Item_521",0,2+28*0,22,22).addFrameReg("Item_521",0,2+28*1,22,22).addFrameReg("Item_521",0,2+28*2,22,22).addFrameReg("Item_521",0,2+28*3,22,22)).addAttribute(new Value<>(0)));
+        ItemManager.defineItem(new Item(547,new FrameBuffer().addFrameReg("Item_547",0,2+28*0,22,22).addFrameReg("Item_547",0,2+28*1,22,22).addFrameReg("Item_547",0,2+28*2,22,22).addFrameReg("Item_547",0,2+28*3,22,22)).addAttribute(new Value<>(0)));
+        ItemManager.defineItem(new Item(548,new FrameBuffer().addFrameReg("Item_548",0,2+28*0,22,22).addFrameReg("Item_548",0,2+28*1,22,22).addFrameReg("Item_548",0,2+28*2,22,22).addFrameReg("Item_548",0,2+28*3,22,22)).addAttribute(new Value<>(0)));
+        ItemManager.defineItem(new Item(549,new FrameBuffer().addFrameReg("Item_549",0,2+28*0,22,22).addFrameReg("Item_549",0,2+28*1,22,22).addFrameReg("Item_549",0,2+28*2,22,22).addFrameReg("Item_549",0,2+28*3,22,22)).addAttribute(new Value<>(0)));
+        ItemManager.defineItem(new Item(575,new FrameBuffer().addFrameReg("Item_575",0,2+28*0,22,22).addFrameReg("Item_575",0,2+28*1,22,22).addFrameReg("Item_575",0,2+28*2,22,22).addFrameReg("Item_575",0,2+28*3,22,22)).addAttribute(new Value<>(0)));
+        ItemManager.defineItem(new Item(757,new FrameBuffer().addFrame("Item_757")).addAttribute(new Value<>(0)));
+        ItemManager.defineItem(new Item(1326,new FrameBuffer().addFrame("Item_1326")).addAttribute(new Value<>(0)));
+        ItemManager.defineItem(new Item(2763,new FrameBuffer().addFrame("Item_2763")).addAttribute(new Value<>(0)));
+        ItemManager.defineItem(new Item(2764,new FrameBuffer().addFrame("Item_2764")).addAttribute(new Value<>(0)));
+        ItemManager.defineItem(new Item(2765,new FrameBuffer().addFrame("Item_2765")).addAttribute(new Value<>(0)));
+        ItemManager.defineItem(new Item(2786,new FrameBuffer().addFrame("Item_2786")).addAttribute(new Value<>(0)));
+        ItemManager.defineItem(new Item(4956,new FrameBuffer().addFrame("Item_4956")).addAttribute(new Value<>(0)));
+        ItemManager.defineItem(new Item(5005,new FrameBuffer().addFrame("Item_5005")).addAttribute(new Value<>(0)));
 
         tileManager.addTileDataReg(1,0,"Tiles_2",18*9,18*3,16,16);
         tileManager.addTileDataReg(1,1,"Tiles_2",18*9,18*0,16,16);

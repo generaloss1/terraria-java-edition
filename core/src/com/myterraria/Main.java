@@ -75,10 +75,12 @@ public class Main implements ApplicationListener{
 		toolBar.setItem(new ItemStack(3),1);
 		toolBar.setItem(new ItemStack(8),2);
 		toolBar.setItem(new ItemStack(9),3);
-		toolBar.setItem(new ItemStack(26),4);
-		toolBar.setItem(new ItemStack(30),5);
-		toolBar.setItem(new ItemStack(121),6);
-		toolBar.setItem(new ItemStack(520),7);
+		toolBar.setItem(new ItemStack(520),4);
+		toolBar.setItem(new ItemStack(521),5);
+		toolBar.setItem(new ItemStack(547),6);
+		toolBar.setItem(new ItemStack(548),7);
+		toolBar.setItem(new ItemStack(549),8);
+		toolBar.setItem(new ItemStack(575),9);
 
 		timer=new Timer();
 
@@ -87,7 +89,7 @@ public class Main implements ApplicationListener{
 		System.out.println(v.angleRad());
 	}
 
-
+	public int timer2;
 
 	public void render(){
 		float delt=Gdx.graphics.getDeltaTime()*75;
@@ -114,6 +116,17 @@ public class Main implements ApplicationListener{
 
 			minutes=(int)timer.getSeconds()-60*(int)Math.floor(timer.getSeconds()/60f);
 			hours=(int)timer.getMinutes()-24*(int)Math.floor(timer.getMinutes()/24f);
+
+			timer2++;
+			if(timer2>7){
+				timer2=0;
+				ItemManager.getItem(520).animation.next();
+				ItemManager.getItem(521).animation.next();
+				ItemManager.getItem(547).animation.next();
+				ItemManager.getItem(548).animation.next();
+				ItemManager.getItem(549).animation.next();
+				ItemManager.getItem(575).animation.next();
+			}
 
 			if(timer1>0)
 				timer1-=delt;
@@ -179,7 +192,7 @@ public class Main implements ApplicationListener{
 			String text4="World size: "+map.layer(3).width+", "+map.layer(3).height;
 			String text5="Tile x: "+tx+", y: "+ty;
 			String text6="Game time: "+hours+":"+minutes;
-
+			String text7="cell: "+toolBar.selected_cell_position;
 
 			sb.setShader(Assets.getShader("inv_shader"));
 
@@ -189,6 +202,7 @@ public class Main implements ApplicationListener{
 			font.draw(sb,text4,cam.x+20,cam.y+cam.height-font.getCache().addText(text4,0,0).height-40*3);
 			font.draw(sb,text5,cam.x+20,cam.y+cam.height-font.getCache().addText(text5,0,0).height-40*4);
 			font.draw(sb,text6,cam.x+20,cam.y+cam.height-font.getCache().addText(text6,0,0).height-40*5);
+			font.draw(sb,text7,cam.x+20,cam.y+cam.height-font.getCache().addText(text7,0,0).height-40*6);
 
 			sb.setShader(null);
 		}
@@ -198,18 +212,20 @@ public class Main implements ApplicationListener{
 
 		if(Gdx.input.isTouched()){
 
-			if(mouse.left){
+			if(mouse.isLeftPressed()){
 				if(!TiledMapUtils.setTile(map,cam,3,tx,ty,0))
 					if(!TiledMapUtils.setTile(map,cam,2,tx,ty,0))
 						TiledMapUtils.setTile(map,cam,1,tx,ty,0);
 
 			}
-			if(mouse.right){
+			if(mouse.isRightPressed()){
 				ItemStack item=toolBar.getSelectedItem();
 				if(item!=null)
 					TiledMapUtils.setTile(map,cam,3,tx,ty,(Integer)ItemManager.getItem(item.id).attributes.get(0).getValue());
 			}
 		}
+
+		toolBar.scroll(mouse.scrolled());
 
 		int cam_speed=10;
 		if(Gdx.input.isKeyPressed(Input.Keys.W))

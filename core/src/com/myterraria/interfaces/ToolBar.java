@@ -1,12 +1,10 @@
 package com.myterraria.interfaces;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import engine.Assets;
 import engine.Camera2D;
-import engine.tiledmap.TileManager;
 
 public class ToolBar implements Interface{
 
@@ -32,7 +30,7 @@ public class ToolBar implements Interface{
 
     public void draw(SpriteBatch sb,Camera2D cam){
         y=Math.round(cam.height)-offset-cell_size-cell_size;
-        for(int i=0; i<10; i++)
+        for(int i=0; i<size; i++)
             if(Gdx.input.isKeyJustPressed(i==9?7:i+8))
                 selected_cell_position=i;
 
@@ -44,15 +42,23 @@ public class ToolBar implements Interface{
             if(itemStack!=null){
                 Item item=ItemManager.getItem(itemStack.id);
                 if(item!=null){
-                    FrameBuffer fb=item.frameBuffer;
-                    if(fb!=null){
-                        TextureRegion texture=fb.getFrame(0);
+                    Animation animation=item.animation;
+                    if(animation!=null){
+                        TextureRegion texture=animation.currentFrame();
                         if(texture!=null)
-                            sb.draw(texture,cam.x+x+cell_size*i+offset*i,cam.y+y,cell_size,cell_size);
+                            sb.draw(texture,cam.x+x+cell_size*i+offset*i+cell_size/6f,cam.y+y+cell_size/6f,cell_size-cell_size/3f,cell_size-cell_size/3f);
                     }
                 }
             }
         }
+    }
+
+    public void scroll(int amount){
+        selected_cell_position+=amount;
+        if(selected_cell_position>=size)
+            selected_cell_position-=size;
+        if(selected_cell_position<0)
+            selected_cell_position+=size;
     }
 
     public void setItem(ItemStack item,int x){

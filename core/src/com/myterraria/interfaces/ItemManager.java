@@ -10,8 +10,8 @@ public class ItemManager{
         items.put(id,new Item(id,fb));
     }
 
-    public static void defineItem(int id,Item i){
-        items.put(id,i);
+    public static void defineItem(Item i) {
+        items.put(i.id,i);
     }
 
     public static Item getItem(int id){

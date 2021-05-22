@@ -5,13 +5,19 @@ import java.util.List;
 
 public class Item{
 
-   public FrameBuffer frameBuffer;
+   public Animation animation;
    public int id;
    public List<Value> attributes;
 
     public Item(int id,FrameBuffer fb){
         this.id=id;
-        frameBuffer=fb;
+        animation=new Animation(fb);
+        attributes=new ArrayList<>();
+    }
+
+    public Item(int id,Animation a){
+        this.id=id;
+        animation=a;
         attributes=new ArrayList<>();
     }
 

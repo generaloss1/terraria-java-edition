@@ -90,7 +90,7 @@ public class TiledMapUtils{
 
     public static boolean setTile(final TiledMap map,Camera2D cam,int l,int x,int y,int id){
         if(map.getTileId(l,x,y)!=id && map.inBounds(l,x,y)){
-            if(id==6)
+            if(id==6 || id==8)
                 l=1;
             if(map.getTileId(l,x,y)==4){
                 for(int i=0; i<RecursiveLights.lights.size(); i++){
