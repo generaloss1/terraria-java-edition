@@ -46,7 +46,7 @@ public class ToolBar implements Interface{
                     if(animation!=null){
                         TextureRegion texture=animation.currentFrame();
                         if(texture!=null)
-                            sb.draw(texture,cam.x+x+cell_size*i+offset*i+cell_size/6f,cam.y+y+cell_size/6f,cell_size-cell_size/3f,cell_size-cell_size/3f);
+                            sb.draw(texture,cam.x+x+cell_size*i+offset*i+cell_size*item.ox,cam.y+y+cell_size*item.oy,cell_size*item.w,cell_size*item.h);
                     }
                 }
             }
