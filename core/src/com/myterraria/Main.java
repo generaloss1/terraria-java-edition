@@ -212,16 +212,21 @@ public class Main implements ApplicationListener{
 
 		if(Gdx.input.isTouched()){
 
-			if(mouse.isLeftPressed()){
+			if(mouse.isRightPressed()){
 				if(!TiledMapUtils.setTile(map,cam,3,tx,ty,0))
 					if(!TiledMapUtils.setTile(map,cam,2,tx,ty,0))
 						TiledMapUtils.setTile(map,cam,1,tx,ty,0);
 
 			}
-			if(mouse.isRightPressed()){
+			if(mouse.isLeftPressed()){
 				ItemStack item=toolBar.getSelectedItem();
-				if(item!=null)
-					TiledMapUtils.setTile(map,cam,3,tx,ty,(Integer)ItemManager.getItem(item.id).attributes.get(0).getValue());
+				if(item!=null){
+					Value item_type=ItemManager.getTag(item.id,"item_type");
+					if(item_type.getValue()=="tile"){
+						Value tile_id=ItemManager.getTag(item.id,"tile_id");
+						TiledMapUtils.setTile(map,cam,3,tx,ty,(Integer)tile_id.getValue());
+					}
+				}
 			}
 		}
 

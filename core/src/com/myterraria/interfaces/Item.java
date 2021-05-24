@@ -1,19 +1,18 @@
 package com.myterraria.interfaces;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 public class Item{
 
    public Animation animation;
    public int id;
-   public List<Value> attributes;
+   public HashMap<String,Value> tags;
    public float ox,oy,w,h;
 
     public Item(int id,FrameBuffer fb){
         this.id=id;
         animation=new Animation(fb);
-        attributes=new ArrayList<>();
+        tags=new HashMap<>();
 
         ox=0f;
         oy=0f;
@@ -24,7 +23,7 @@ public class Item{
     public Item(int id,FrameBuffer fb,float size){
         this.id=id;
         animation=new Animation(fb);
-        attributes=new ArrayList<>();
+        tags=new HashMap<>();
 
         ox=size/2;
         oy=size/2;
@@ -35,7 +34,7 @@ public class Item{
     public Item(int id,FrameBuffer fb,float x,float y,float ow,float oh){
         this.id=id;
         animation=new Animation(fb);
-        attributes=new ArrayList<>();
+        tags=new HashMap<>();
 
         ox=x;
         oy=y;
@@ -46,11 +45,11 @@ public class Item{
     public Item(int id,Animation a){
         this.id=id;
         animation=a;
-        attributes=new ArrayList<>();
+        tags=new HashMap<>();
     }
 
-    public Item addAttribute(Value v){
-        attributes.add(v);
+    public Item addTag(String id,Value v){
+        tags.put(id,v);
         return this;
     }
 

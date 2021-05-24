@@ -14,6 +14,10 @@ public class ItemManager{
         items.put(i.id,i);
     }
 
+    public static Value getTag(int id,String tag_id){
+        return ItemManager.getItem(id).tags.get(tag_id);
+    }
+
     public static Item getItem(int id){
         return items.get(id);
     }

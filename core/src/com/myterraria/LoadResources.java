@@ -10,8 +10,6 @@ import com.myterraria.interfaces.Value;
 import engine.Assets;
 import engine.tiledmap.TileManager;
 
-import java.util.ArrayList;
-
 public class LoadResources{
 
     public static void loadResources(){
@@ -93,28 +91,28 @@ public class LoadResources{
 
         //ATTRIBUTES 1 - tileid
 
-        ItemManager.defineItem(new Item(0,new FrameBuffer().addFrame("Item_0"),1f));
-        ItemManager.defineItem(new Item(2,new FrameBuffer().addFrame("Item_2"),0.5f).addAttribute(new Value<>(2)));
-        ItemManager.defineItem(new Item(3,new FrameBuffer().addFrame("Item_3"),0.5f).addAttribute(new Value<>(3)));
-        ItemManager.defineItem(new Item(8,new FrameBuffer().addFrame("Item_8"),0.5f).addAttribute(new Value<>(4)));
-        ItemManager.defineItem(new Item(9,new FrameBuffer().addFrame("Item_9"),0.5f).addAttribute(new Value<>(30)));
-        ItemManager.defineItem(new Item(26,new FrameBuffer().addFrame("Item_26"),0.5f).addAttribute(new Value<>(8)));
-        ItemManager.defineItem(new Item(30,new FrameBuffer().addFrame("Item_30"),0.5f).addAttribute(new Value<>(6)));
-        ItemManager.defineItem(new Item(121,new FrameBuffer().addFrame("Item_121"),0.5f).addAttribute(new Value<>(0)));
-        ItemManager.defineItem(new Item(520,new FrameBuffer().addFrameReg("Item_520",0,2+28*0,22,22).addFrameReg("Item_520",0,2+28*1,22,22).addFrameReg("Item_520",0,2+28*2,22,22).addFrameReg("Item_520",0,2+28*3,22,22),0.5f).addAttribute(new Value<>(0)));
-        ItemManager.defineItem(new Item(521,new FrameBuffer().addFrameReg("Item_521",0,2+28*0,22,22).addFrameReg("Item_521",0,2+28*1,22,22).addFrameReg("Item_521",0,2+28*2,22,22).addFrameReg("Item_521",0,2+28*3,22,22),0.5f).addAttribute(new Value<>(0)));
-        ItemManager.defineItem(new Item(547,new FrameBuffer().addFrameReg("Item_547",0,2+28*0,22,22).addFrameReg("Item_547",0,2+28*1,22,22).addFrameReg("Item_547",0,2+28*2,22,22).addFrameReg("Item_547",0,2+28*3,22,22),0.5f).addAttribute(new Value<>(0)));
-        ItemManager.defineItem(new Item(548,new FrameBuffer().addFrameReg("Item_548",0,2+28*0,22,22).addFrameReg("Item_548",0,2+28*1,22,22).addFrameReg("Item_548",0,2+28*2,22,22).addFrameReg("Item_548",0,2+28*3,22,22),0.5f).addAttribute(new Value<>(0)));
-        ItemManager.defineItem(new Item(549,new FrameBuffer().addFrameReg("Item_549",0,2+28*0,22,22).addFrameReg("Item_549",0,2+28*1,22,22).addFrameReg("Item_549",0,2+28*2,22,22).addFrameReg("Item_549",0,2+28*3,22,22),0.5f).addAttribute(new Value<>(0)));
-        ItemManager.defineItem(new Item(575,new FrameBuffer().addFrameReg("Item_575",0,2+28*0,22,22).addFrameReg("Item_575",0,2+28*1,22,22).addFrameReg("Item_575",0,2+28*2,22,22).addFrameReg("Item_575",0,2+28*3,22,22),0.5f).addAttribute(new Value<>(0)));
-        ItemManager.defineItem(new Item(757,new FrameBuffer().addFrame("Item_757")).addAttribute(new Value<>(0)));
-        ItemManager.defineItem(new Item(1326,new FrameBuffer().addFrame("Item_1326"),0.5f).addAttribute(new Value<>(0)));
-        ItemManager.defineItem(new Item(2763,new FrameBuffer().addFrame("Item_2763"),0.5f).addAttribute(new Value<>(0)));
-        ItemManager.defineItem(new Item(2764,new FrameBuffer().addFrame("Item_2764"),0.5f).addAttribute(new Value<>(0)));
-        ItemManager.defineItem(new Item(2765,new FrameBuffer().addFrame("Item_2765"),0.5f).addAttribute(new Value<>(0)));
-        ItemManager.defineItem(new Item(2786,new FrameBuffer().addFrame("Item_2786"),0.5f).addAttribute(new Value<>(0)));
-        ItemManager.defineItem(new Item(4956,new FrameBuffer().addFrame("Item_4956"),0.5f).addAttribute(new Value<>(0)));
-        ItemManager.defineItem(new Item(5005,new FrameBuffer().addFrame("Item_5005"),0.5f).addAttribute(new Value<>(0)));
+        ItemManager.defineItem(new Item(0,new FrameBuffer().addFrame("Item_0")).addTag("item_type",new Value<>("air")));
+        ItemManager.defineItem(new Item(2,new FrameBuffer().addFrame("Item_2"),0.5f).addTag("item_type",new Value<>("tile")).addTag("tile_id",new Value<>(2)));
+        ItemManager.defineItem(new Item(3,new FrameBuffer().addFrame("Item_3"),0.5f).addTag("item_type",new Value<>("tile")).addTag("tile_id",new Value<>(3)));
+        ItemManager.defineItem(new Item(8,new FrameBuffer().addFrame("Item_8"),0.5f).addTag("item_type",new Value<>("tile")).addTag("tile_id",new Value<>(4)));
+        ItemManager.defineItem(new Item(9,new FrameBuffer().addFrame("Item_9"),0.5f).addTag("item_type",new Value<>("tile")).addTag("tile_id",new Value<>(30)));
+        ItemManager.defineItem(new Item(26,new FrameBuffer().addFrame("Item_26"),0.5f).addTag("item_type",new Value<>("tile")).addTag("tile_id",new Value<>(8)));
+        ItemManager.defineItem(new Item(30,new FrameBuffer().addFrame("Item_30"),0.5f).addTag("item_type",new Value<>("tile")).addTag("tile_id",new Value<>(6)));
+        ItemManager.defineItem(new Item(121,new FrameBuffer().addFrame("Item_121"),0.5f).addTag("item_type",new Value<>("")));
+        ItemManager.defineItem(new Item(520,new FrameBuffer().addFrameReg("Item_520",0,2+28*0,22,22).addFrameReg("Item_520",0,2+28*1,22,22).addFrameReg("Item_520",0,2+28*2,22,22).addFrameReg("Item_520",0,2+28*3,22,22),0.5f).addTag("item_type",new Value<>("")));
+        ItemManager.defineItem(new Item(521,new FrameBuffer().addFrameReg("Item_521",0,2+28*0,22,22).addFrameReg("Item_521",0,2+28*1,22,22).addFrameReg("Item_521",0,2+28*2,22,22).addFrameReg("Item_521",0,2+28*3,22,22),0.5f).addTag("item_type",new Value<>("")));
+        ItemManager.defineItem(new Item(547,new FrameBuffer().addFrameReg("Item_547",0,2+28*0,22,22).addFrameReg("Item_547",0,2+28*1,22,22).addFrameReg("Item_547",0,2+28*2,22,22).addFrameReg("Item_547",0,2+28*3,22,22),0.5f).addTag("item_type",new Value<>("")));
+        ItemManager.defineItem(new Item(548,new FrameBuffer().addFrameReg("Item_548",0,2+28*0,22,22).addFrameReg("Item_548",0,2+28*1,22,22).addFrameReg("Item_548",0,2+28*2,22,22).addFrameReg("Item_548",0,2+28*3,22,22),0.5f).addTag("item_type",new Value<>("")));
+        ItemManager.defineItem(new Item(549,new FrameBuffer().addFrameReg("Item_549",0,2+28*0,22,22).addFrameReg("Item_549",0,2+28*1,22,22).addFrameReg("Item_549",0,2+28*2,22,22).addFrameReg("Item_549",0,2+28*3,22,22),0.5f).addTag("item_type",new Value<>("")));
+        ItemManager.defineItem(new Item(575,new FrameBuffer().addFrameReg("Item_575",0,2+28*0,22,22).addFrameReg("Item_575",0,2+28*1,22,22).addFrameReg("Item_575",0,2+28*2,22,22).addFrameReg("Item_575",0,2+28*3,22,22),0.5f).addTag("item_type",new Value<>("")));
+        ItemManager.defineItem(new Item(757,new FrameBuffer().addFrame("Item_757")).addTag("item_type",new Value<>("")));
+        ItemManager.defineItem(new Item(1326,new FrameBuffer().addFrame("Item_1326"),0.5f).addTag("item_type",new Value<>("")));
+        ItemManager.defineItem(new Item(2763,new FrameBuffer().addFrame("Item_2763"),0.5f).addTag("item_type",new Value<>("")));
+        ItemManager.defineItem(new Item(2764,new FrameBuffer().addFrame("Item_2764"),0.5f).addTag("item_type",new Value<>("")));
+        ItemManager.defineItem(new Item(2765,new FrameBuffer().addFrame("Item_2765"),0.5f).addTag("item_type",new Value<>("")));
+        ItemManager.defineItem(new Item(2786,new FrameBuffer().addFrame("Item_2786"),0.5f).addTag("item_type",new Value<>("")));
+        ItemManager.defineItem(new Item(4956,new FrameBuffer().addFrame("Item_4956"),0.5f).addTag("item_type",new Value<>("")));
+        ItemManager.defineItem(new Item(5005,new FrameBuffer().addFrame("Item_5005"),0.5f).addTag("item_type",new Value<>("")));
 
         tileManager.addTileDataReg(1,0,"Tiles_2",18*9,18*3,16,16);
         tileManager.addTileDataReg(1,1,"Tiles_2",18*9,18*0,16,16);
