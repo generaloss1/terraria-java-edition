@@ -10,7 +10,7 @@ public class ToolBar implements Interface{
 
     public ToolBar(Camera2D cam,int s){
         size=s;
-        cell_size=Math.round(cam.height/12);
+        cell_size=Math.round(cam.height/15);
         offset=Math.round((cell_size*1.5f)/10.5f);
 
         x=cell_size/2;
@@ -29,7 +29,7 @@ public class ToolBar implements Interface{
 
 
     public void draw(SpriteBatch sb,Camera2D cam){
-        y=Math.round(cam.height)-offset-cell_size-cell_size;
+        y=Math.round(cam.height)-offset-cell_size-cell_size/2;
         for(int i=0; i<size; i++)
             if(Gdx.input.isKeyJustPressed(i==9?7:i+8))
                 selected_cell_position=i;

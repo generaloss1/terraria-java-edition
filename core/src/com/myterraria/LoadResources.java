@@ -91,21 +91,21 @@ public class LoadResources{
 
         //LAST_PLAYER
 
-        Assets.loadTexture("player_last/eyes","eyes");
-        Assets.loadTexture("player_last/eyes2","eyes2");
-        Assets.loadTexture("player_last/hair1","hair1");
-        Assets.loadTexture("player_last/hands","hands");
-        Assets.loadTexture("player_last/hands2","hands2");
-        Assets.loadTexture("player_last/hands3","hands3");
-        Assets.loadTexture("player_last/head","head");
-        Assets.loadTexture("player_last/pants","pants");
-        Assets.loadTexture("player_last/shirt","shirt");
-        Assets.loadTexture("player_last/shoes","shoes");
-        Assets.loadTexture("player_last/undershirt","undershirt");
+        Assets.loadTexture("player_last/eyes.png","eyes");
+        Assets.loadTexture("player_last/eyes2.png","eyes2");
+        Assets.loadTexture("player_last/hair1.png","hair1");
+        Assets.loadTexture("player_last/hands.png","hands");
+        Assets.loadTexture("player_last/hands2.png","hands2");
+        Assets.loadTexture("player_last/hands3.png","hands3");
+        Assets.loadTexture("player_last/head.png","head");
+        Assets.loadTexture("player_last/pants.png","pants");
+        Assets.loadTexture("player_last/shirt.png","shirt");
+        Assets.loadTexture("player_last/shoes.png","shoes");
+        Assets.loadTexture("player_last/undershirt.png","undershirt");
 
     }
 
-    public static void defineTiles(TileManager tileManager){
+    public static void defineTilesAndItems(TileManager tileManager){
 
         //ATTRIBUTES 1 - tileid
 
@@ -123,8 +123,8 @@ public class LoadResources{
         ItemManager.defineItem(new Item(548,new FrameBuffer().addFrameReg("Item_548",0,2+28*0,22,22).addFrameReg("Item_548",0,2+28*1,22,22).addFrameReg("Item_548",0,2+28*2,22,22).addFrameReg("Item_548",0,2+28*3,22,22),0.35f).addTag("item_type",new Value<>("")));
         ItemManager.defineItem(new Item(549,new FrameBuffer().addFrameReg("Item_549",0,2+28*0,22,22).addFrameReg("Item_549",0,2+28*1,22,22).addFrameReg("Item_549",0,2+28*2,22,22).addFrameReg("Item_549",0,2+28*3,22,22),0.35f).addTag("item_type",new Value<>("")));
         ItemManager.defineItem(new Item(575,new FrameBuffer().addFrameReg("Item_575",0,2+28*0,22,22).addFrameReg("Item_575",0,2+28*1,22,22).addFrameReg("Item_575",0,2+28*2,22,22).addFrameReg("Item_575",0,2+28*3,22,22),0.35f).addTag("item_type",new Value<>("")));
-        ItemManager.defineItem(new Item(757,new FrameBuffer().addFrame("Item_757"),0.75f).addTag("item_type",new Value<>("")));
-        ItemManager.defineItem(new Item(1326,new FrameBuffer().addFrame("Item_1326"),0.75f).addTag("item_type",new Value<>("")));
+        ItemManager.defineItem(new Item(757,new FrameBuffer().addFrame("Item_757"),0.65f).addTag("item_type",new Value<>("")));
+        ItemManager.defineItem(new Item(1326,new FrameBuffer().addFrame("Item_1326"),0.65f).addTag("item_type",new Value<>("")));
         ItemManager.defineItem(new Item(2763,new FrameBuffer().addFrame("Item_2763"),0.35f).addTag("item_type",new Value<>("")));
         ItemManager.defineItem(new Item(2764,new FrameBuffer().addFrame("Item_2764"),0.35f).addTag("item_type",new Value<>("")));
         ItemManager.defineItem(new Item(2765,new FrameBuffer().addFrame("Item_2765"),0.35f).addTag("item_type",new Value<>("")));

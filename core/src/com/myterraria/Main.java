@@ -13,7 +13,6 @@ import engine.Camera2D;
 import engine.Mouse;
 import engine.Timer;
 import engine.math.Maths;
-import engine.math.vectors.Vector2f;
 import engine.tiledmap.TileManager;
 import engine.tiledmap.TiledMap;
 
@@ -27,7 +26,7 @@ public class Main implements ApplicationListener{
 
 	public static TiledMap map;
 	public TileManager tileManager;
-	public static int tile_pixel_size=32;//21,32,43
+	public static int tile_pixel_size=32;//21.78,32,43.76
 	public long seed=Maths.randomSeed(8);
 
 	public float time=0;
@@ -50,6 +49,9 @@ public class Main implements ApplicationListener{
 		int map_height=54;
 		int surface=27;
 
+		cam.fullScreen(true);
+		cam.translatePosition(map_width/2f*tile_pixel_size-Gdx.graphics.getWidth()/2f,surface*tile_pixel_size);
+
 		tileManager=new TileManager();
 		map=new TiledMap();
 		map.addLayer(1,map_width,map_height,tile_pixel_size,tile_pixel_size);//стены
@@ -62,11 +64,8 @@ public class Main implements ApplicationListener{
 		WorldGenerator.isGenerated=true;
 		//map.load("/home/user/Downloads/world.wld");
 
-		cam.translatePosition(map_width/2f*tile_pixel_size,surface*tile_pixel_size);
-		cam.fullScreen(true);
-
 		LoadResources.loadResources();
-		LoadResources.defineTiles(tileManager);
+		LoadResources.defineTilesAndItems(tileManager);
 
 		RecursiveLights.init(map);
 
@@ -84,11 +83,8 @@ public class Main implements ApplicationListener{
 
 		timer=new Timer();
 
-		Vector2f v=new Vector2f(1,1).norm();
-		System.out.println(v.angleDeg());
-		System.out.println(v.angleRad());
-
-
+		Player.x=map.layer(3).width/2f;
+		Player.y=map.layer(3).height/2f;
 	}
 
 	public int timer2;
@@ -97,10 +93,9 @@ public class Main implements ApplicationListener{
 		float delt=Gdx.graphics.getDeltaTime()*75;
 		Gdx.gl.glClearColor(0,0,0,1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		cam.lookAt(Player.draw_x-cam.width/2+Player.w/2f,Player.draw_y-cam.height/2+Player.h/2f);
 		cam.update(sb);
 		sb.begin();
-
-		Player.draw(sb);
 
 		if(WorldGenerator.isGenerated){
 			//sb.setColor(1,1-time/100f,1-time/100f,1);
@@ -114,6 +109,8 @@ public class Main implements ApplicationListener{
 			map.draw(tileManager,sb,cam);
 			sb.setShader(null);
 
+			Player.draw(sb,map);
+
 			toolBar.draw(sb,cam);
 
 			RecursiveLights.update(map,cam);
@@ -122,7 +119,7 @@ public class Main implements ApplicationListener{
 			hours=(int)timer.getMinutes()-24*(int)Math.floor(timer.getMinutes()/24f);
 
 			timer2++;
-			if(timer2>7){
+			if(timer2>4.25*delt){
 				timer2=0;
 				ItemManager.getItem(520).animation.next();
 				ItemManager.getItem(521).animation.next();
@@ -136,7 +133,7 @@ public class Main implements ApplicationListener{
 				timer1-=delt;
 			if(timer1>0){
 				sb.setColor(1,1,1,timer1/200f);
-				sb.draw(Assets.getTexture("black_pixel"),cam.x,cam.y,cam.x+cam.width,cam.y+cam.height);
+				sb.draw(Assets.getTexture("black_pixel"),cam.x,cam.y,cam.x+Gdx.graphics.getWidth(),cam.y+Gdx.graphics.getHeight());
 				sb.setColor(1,1,1,1);
 
 				BitmapFont font=Assets.getTTF("font1");
@@ -170,8 +167,8 @@ public class Main implements ApplicationListener{
 
 
 	public void controls(float delt){
-		int tx=(int)(Gdx.input.getX()+cam.x)/tile_pixel_size;
-		int ty=(int)(Gdx.graphics.getHeight()-Gdx.input.getY()+cam.y)/tile_pixel_size;
+		int tx=(int)Math.floor((Gdx.input.getX()+cam.x)/map.layer(3).tiles_offset_x);
+		int ty=(int)Math.floor((Gdx.graphics.getHeight()-Gdx.input.getY()+cam.y)/map.layer(3).tiles_offset_y);
 
 		if(Gdx.input.isKeyPressed(Input.Keys.F3)){
 			f3_pressed=true;
@@ -246,10 +243,29 @@ public class Main implements ApplicationListener{
 		if(Gdx.input.isKeyPressed(Input.Keys.D))
 			cam.translatePosition((int)(cam_speed*delt),0);
 
-		if(Gdx.input.isKeyPressed(Input.Keys.EQUALS))
-			cam.translateScale(-8*delt);
-		if(Gdx.input.isKeyPressed(Input.Keys.MINUS))
-			cam.translateScale(8*delt);
+		if(Gdx.input.isKeyPressed(Input.Keys.EQUALS) && map.layer(1).tiles_offset_x<=43.76){
+			map.layer(1).tiles_offset_x+=delt/4;
+			map.layer(2).tiles_offset_x+=delt/4;
+			map.layer(3).tiles_offset_x+=delt/4;
+
+			map.layer(1).tiles_offset_y+=delt/4;
+			map.layer(2).tiles_offset_y+=delt/4;
+			map.layer(3).tiles_offset_y+=delt/4;
+		}
+		if(Gdx.input.isKeyPressed(Input.Keys.MINUS) && map.layer(1).tiles_offset_x>=21.78){
+			map.layer(1).tiles_offset_x-=delt/4;
+			map.layer(2).tiles_offset_x-=delt/4;
+			map.layer(3).tiles_offset_x-=delt/4;
+
+			map.layer(1).tiles_offset_y-=delt/4;
+			map.layer(2).tiles_offset_y-=delt/4;
+			map.layer(3).tiles_offset_y-=delt/4;
+		}
+
+		/*for(int i=0; i<256; i++){
+			if(Gdx.input.isKeyPressed(i))
+				System.out.println(i);
+		}*/
 
 		if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
 			System.exit(0);

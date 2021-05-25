@@ -18,8 +18,8 @@ public class TMLayer implements Serializable{
 	public int width;
 	public int height;
 
-	public int tiles_offset_x;
-	public int tiles_offset_y;
+	public float tiles_offset_x;
+	public float tiles_offset_y;
 
 	public int view;
 
