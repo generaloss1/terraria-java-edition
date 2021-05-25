@@ -11,10 +11,10 @@ public class TileData{
 	public TileData(int tdata,TextureRegion t,float w,float h,float ox,float oy){
 		data=tdata;
 		texture=t;
-		width=w;
-		height=h;
-		offset_x=ox;
-		offset_y=oy;
+		width=w+0.002f;
+		height=h+0.002f;
+		offset_x=ox-0.001f;
+		offset_y=oy-0.001f;
 	}
 
 }

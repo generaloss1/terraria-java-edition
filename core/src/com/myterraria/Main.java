@@ -49,7 +49,7 @@ public class Main implements ApplicationListener{
 		int map_height=54;
 		int surface=27;
 
-		cam.fullScreen(true);
+		//cam.fullScreen(true);
 		cam.translatePosition(map_width/2f*tile_pixel_size-Gdx.graphics.getWidth()/2f,surface*tile_pixel_size);
 
 		tileManager=new TileManager();
@@ -85,6 +85,7 @@ public class Main implements ApplicationListener{
 
 		Player.x=map.layer(3).width/2f;
 		Player.y=map.layer(3).height/2f;
+		Player.updateDrawPosition(map);
 	}
 
 	public int timer2;
@@ -92,7 +93,7 @@ public class Main implements ApplicationListener{
 	public void render(){
 		float delt=Gdx.graphics.getDeltaTime()*75;
 		Gdx.gl.glClearColor(0,0,0,1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);controls(delt);
 		cam.lookAt(Player.draw_x-cam.width/2+Player.w/2f,Player.draw_y-cam.height/2+Player.h/2f);
 		cam.update(sb);
 		sb.begin();
@@ -110,6 +111,7 @@ public class Main implements ApplicationListener{
 			sb.setShader(null);
 
 			Player.draw(sb,map);
+
 
 			toolBar.draw(sb,cam);
 
@@ -157,9 +159,9 @@ public class Main implements ApplicationListener{
 			font2.draw(sb,"F3 for more info; 1/2/3/4/6/0 + LMB for set tile;",cam.x+20,cam.y+20+font2.getLineHeight());
 		}
 
-		controls(delt);
-
 		sb.end();
+
+		controls(delt);
 	}
 
 
@@ -233,15 +235,19 @@ public class Main implements ApplicationListener{
 
 		toolBar.scroll(mouse.scrolled());
 
-		int cam_speed=10;
+		float cam_speed=0.15f;
 		if(Gdx.input.isKeyPressed(Input.Keys.W))
-			cam.translatePosition(0,(int)(cam_speed*delt));
-		if(Gdx.input.isKeyPressed(Input.Keys.A))
-			cam.translatePosition(-(int)(cam_speed*delt),0);
+			Player.translatePositio(0,cam_speed*delt,map);
+		if(Gdx.input.isKeyPressed(Input.Keys.A)){
+			Player.translatePositio(-cam_speed*delt,0,map);
+			Player.lookside=true;
+		}
 		if(Gdx.input.isKeyPressed(Input.Keys.S))
-			cam.translatePosition(0,-(int)(cam_speed*delt));
-		if(Gdx.input.isKeyPressed(Input.Keys.D))
-			cam.translatePosition((int)(cam_speed*delt),0);
+			Player.translatePositio(0,-cam_speed*delt,map);
+		if(Gdx.input.isKeyPressed(Input.Keys.D)){
+			Player.translatePositio(cam_speed*delt,0,map);
+			Player.lookside=false;
+		}
 
 		if(Gdx.input.isKeyPressed(Input.Keys.EQUALS) && map.layer(1).tiles_offset_x<=43.76){
 			map.layer(1).tiles_offset_x+=delt/4;
@@ -251,6 +257,7 @@ public class Main implements ApplicationListener{
 			map.layer(1).tiles_offset_y+=delt/4;
 			map.layer(2).tiles_offset_y+=delt/4;
 			map.layer(3).tiles_offset_y+=delt/4;
+			Player.updateDrawPosition(map);
 		}
 		if(Gdx.input.isKeyPressed(Input.Keys.MINUS) && map.layer(1).tiles_offset_x>=21.78){
 			map.layer(1).tiles_offset_x-=delt/4;
@@ -260,6 +267,7 @@ public class Main implements ApplicationListener{
 			map.layer(1).tiles_offset_y-=delt/4;
 			map.layer(2).tiles_offset_y-=delt/4;
 			map.layer(3).tiles_offset_y-=delt/4;
+			Player.updateDrawPosition(map);
 		}
 
 		/*for(int i=0; i<256; i++){

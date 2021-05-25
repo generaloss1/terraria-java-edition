@@ -18,6 +18,9 @@ public class DesktopLauncher{
 		cfg.foregroundFPS=75;
 		cfg.initialBackgroundColor=new Color(0,0,0,1);
 
+		for(String a:arg)
+			System.out.println(a);
+
 		new LwjglApplication(new Main(),cfg);
 	}
 
