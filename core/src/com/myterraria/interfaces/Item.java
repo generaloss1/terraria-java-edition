@@ -25,9 +25,10 @@ public class Item{
         animation=new Animation(fb);
         tags=new HashMap<>();
 
-        ox=size/2;
-        oy=size/2;
-        w=size;
+        float k=(float)fb.getFrame(0).getRegionWidth()/fb.getFrame(0).getRegionHeight();
+        ox=0.5f-size/2*k;
+        oy=0.5f-size/2;
+        w=size*k;
         h=size;
     }
 

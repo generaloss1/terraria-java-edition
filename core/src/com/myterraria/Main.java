@@ -76,17 +76,19 @@ public class Main implements ApplicationListener{
 		toolBar.setItem(new ItemStack(8),2);
 		toolBar.setItem(new ItemStack(9),3);
 		toolBar.setItem(new ItemStack(520),4);
-		toolBar.setItem(new ItemStack(521),5);
-		toolBar.setItem(new ItemStack(547),6);
-		toolBar.setItem(new ItemStack(548),7);
-		toolBar.setItem(new ItemStack(549),8);
-		toolBar.setItem(new ItemStack(575),9);
+		toolBar.setItem(new ItemStack(757),5);
+		toolBar.setItem(new ItemStack(1326),6);
+		toolBar.setItem(new ItemStack(2763),7);
+		toolBar.setItem(new ItemStack(2764),8);
+		toolBar.setItem(new ItemStack(2765),9);
 
 		timer=new Timer();
 
 		Vector2f v=new Vector2f(1,1).norm();
 		System.out.println(v.angleDeg());
 		System.out.println(v.angleRad());
+
+
 	}
 
 	public int timer2;
@@ -97,6 +99,8 @@ public class Main implements ApplicationListener{
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		cam.update(sb);
 		sb.begin();
+
+		Player.draw(sb);
 
 		if(WorldGenerator.isGenerated){
 			//sb.setColor(1,1-time/100f,1-time/100f,1);
