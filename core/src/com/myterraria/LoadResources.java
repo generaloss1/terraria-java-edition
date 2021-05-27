@@ -75,6 +75,7 @@ public class LoadResources{
         Assets.loadTexture("tiles/Tiles_30.png","Tiles_30");
         Assets.loadTexture("tiles/Wall_1.png","Wall_1");
         Assets.loadTexture("tiles/Wall_2.png","Wall_2");
+        Assets.loadTexture("tiles/Wall_65.png","Wall_65");
         Assets.loadTexture("tiles/Tree_Branches_0.png","Tree_Branches_0");
         Assets.loadTexture("tiles/Tree_Branches_6.png","Tree_Branches_6");
         Assets.loadTexture("tiles/Tree_Tops_0.png","Tree_Tops_0");
@@ -243,6 +244,23 @@ public class LoadResources{
         tileManager.addTileDataReg(8,13,"Wall_1",36*0,36*4,32,32,2,2,-1f/2,-1f/2);
         tileManager.addTileDataReg(8,14,"Wall_1",36*1,36*2,32,32,2,2,-1f/2,-1f/2);
         tileManager.addTileDataReg(8,15,"Wall_1",36*1,36*4,32,32,2,2,-1f/2,-1f/2);
+
+        tileManager.addTileDataReg(65,0,"Wall_65",36*9,36*3,32,32,2,2,-1f/2,-1f/2);
+        tileManager.addTileDataReg(65,1,"Wall_65",36*9,36*0,32,32,2,2,-1f/2,-1f/2);
+        tileManager.addTileDataReg(65,2,"Wall_65",36*6,36*4,32,32,2,2,-1f/2,-1f/2);
+        tileManager.addTileDataReg(65,3,"Wall_65",36*12,36*0,32,32,2,2,-1f/2,-1f/2);
+        tileManager.addTileDataReg(65,4,"Wall_65",36*6,36*0,32,32,2,2,-1f/2,-1f/2);
+        tileManager.addTileDataReg(65,5,"Wall_65",36*0,36*3,32,32,2,2,-1f/2,-1f/2);
+        tileManager.addTileDataReg(65,6,"Wall_65",36*1,36*0,32,32,2,2,-1f/2,-1f/2);
+        tileManager.addTileDataReg(65,7,"Wall_65",36*1,36*3,32,32,2,2,-1f/2,-1f/2);
+        tileManager.addTileDataReg(65,8,"Wall_65",36*5,36*0,32,32,2,2,-1f/2,-1f/2);
+        tileManager.addTileDataReg(65,9,"Wall_65",36*0,36*0,32,32,2,2,-1f/2,-1f/2);
+        tileManager.addTileDataReg(65,10,"Wall_65",36*1,36*1,32,32,2,2,-1f/2,-1f/2);
+        tileManager.addTileDataReg(65,11,"Wall_65",36*4,36*0,32,32,2,2,-1f/2,-1f/2);
+        tileManager.addTileDataReg(65,12,"Wall_65",36*6,36*3,32,32,2,2,-1f/2,-1f/2);
+        tileManager.addTileDataReg(65,13,"Wall_65",36*0,36*4,32,32,2,2,-1f/2,-1f/2);
+        tileManager.addTileDataReg(65,14,"Wall_65",36*1,36*2,32,32,2,2,-1f/2,-1f/2);
+        tileManager.addTileDataReg(65,15,"Wall_65",36*1,36*4,32,32,2,2,-1f/2,-1f/2);
 
         tileManager.addTileDataReg(5,0,"Tiles_5",22*0,22*0,20,20,10f/8,10f/8,-1f/8,-2f/8);
         tileManager.addTileDataReg(5,1,"Tiles_5",22*1,22*0,20,20,10f/8,10f/8,-1f/8,-2f/8);

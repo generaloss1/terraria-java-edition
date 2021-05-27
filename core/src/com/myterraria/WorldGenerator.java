@@ -27,8 +27,8 @@ public class WorldGenerator{
                 noise.genGrad(seed);
                 for(int x=0; x<map.layer(l).width; x++){
                     percents+=100f/map.layer(l).width;
-                    double ng=noise.generate((float)(x*(1.0/100)*2),(float)(x*(1.0/50)))*5 + noise.generate((float)(x*(1.0/50)*2),(float)(x*(1.0/15)))*2;
-                    int py=(int)(ng+surface+new SimplexNoise().genGrad(seed).generate((float)(x*(1.0/200)),(float)(x*(1.0/200)))*15);
+                    double ng=noise.generate((float)(x*(1.0/100)*2),x*(1.0f/50))*5 + noise.generate(x*(1.0f/50)*2,x*(1.0f/15))*2;
+                    int py=(int)(ng+surface+new SimplexNoise().genGrad(seed).generate(x*(1.0f/200),x*(1.0f/200))*15);
                     map.setTile(l,x,py,1,0);
                     for(int y=py-1;y>=0; y--)
                         map.setTile(l,x,y,2,0);
@@ -37,8 +37,8 @@ public class WorldGenerator{
                 percents=0;
                 for(int x=0; x<map.layer(l).width; x++){
                     percents+=100f/map.layer(l).width;
-                    double ng=noise.generate((float)(x*(1.0/100)*2),(float)(x*(1.0/50)))*5 + noise.generate((float)(x*(1.0/50)*2),(float)(x*(1.0/15)))*2;
-                    int py=(int)(ng+surface+new SimplexNoise().genGrad(seed).generate((float)(x*(1.0/200)),(float)(x*(1.0/200)))*15);
+                    double ng=noise.generate((float)(x*(1.0/100)*2),x*(1.0f/50))*5 + noise.generate(x*(1.0f/50)*2,x*(1.0f/15))*2;
+                    int py=(int)(ng+surface+new SimplexNoise().genGrad(seed).generate(x*(1.0f/200),x*(1.0f/200))*15);
                     for(int y=py-1;y>2; y--)
                         map.setTile(l2,x,y-3,6,0);
 
@@ -49,13 +49,13 @@ public class WorldGenerator{
                 percents=0;
                 for(int x=0; x<map.layer(l).width; x++){
                     percents+=100f/map.layer(l).width;
-                    double ng=noise.generate((float)(x*(1.0/100)*2),(float)(x*(1.0/50)))*5 + noise.generate((float)(x*(1.0/50)*2),(float)(x*(1.0/15)))*2;
-                    int py=(int)(ng+surface+new SimplexNoise().genGrad(seed).generate((float)(x*(1.0/200)),(float)(x*(1.0/200)))*15);
+                    double ng=noise.generate((float)(x*(1.0/100)*2),x*(1.0f/50))*5 + noise.generate(x*(1.0f/50)*2,x*(1.0f/15))*2;
+                    int py=(int)(ng+surface+new SimplexNoise().genGrad(seed).generate(x*(1.0f/200),x*(1.0f/200))*15);
                     for(int y=py;y>=0; y--){
                         double ng3=(
-                                new SimplexNoise().genGrad(seed).generate((float)(x*(1.0/42)),(float)(y*(1.0/42)))*0.5 +
-                                        new SimplexNoise().genGrad(seed+1).generate((float)(x*(1.0/21)),(float)(y*(1.0/21)))*0.3 +
-                                        new SimplexNoise().genGrad(seed+2).generate((float)(x*(1.0/10)),(float)(y*(1.0/10)))*0.1
+                                new SimplexNoise().genGrad(seed).generate(x*(1.0f/42),y*(1.0f/42))*0.5 +
+                                        new SimplexNoise().genGrad(seed+1).generate(x*(1.0f/21),y*(1.0f/21))*0.3 +
+                                        new SimplexNoise().genGrad(seed+2).generate(x*(1.0f/10),y*(1.0f/10))*0.1
                         )/3;
 
                         if(ng3>0.15)
@@ -66,19 +66,78 @@ public class WorldGenerator{
                 percents=0;
                 for(int x=0; x<map.layer(l).width; x++){
                     percents+=100f/map.layer(l).width;
-                    double ng=noise.generate((float)(x*(1.0/100)*2),(float)(x*(1.0/50)))*5 + noise.generate((float)(x*(1.0/50)*2),(float)(x*(1.0/15)))*2;
-                    int py=(int)(ng+surface+new SimplexNoise().genGrad(seed).generate((float)(x*(1.0/200)),(float)(x*(1.0/200)))*15);
+                    double ng=noise.generate((float)(x*(1.0/100)*2),x*(1.0f/50))*5 + noise.generate(x*(1.0f/50)*2,x*(1.0f/15))*2;
+                    int py=(int)(ng+surface+new SimplexNoise().genGrad(seed).generate(x*(1.0f/200),x*(1.0f/200))*15);
                     for(int y=py;y>=0; y--){
                         double ng3=(
-                                new SimplexNoise().genGrad(seed).generate((float)(x*(1.0/300)),(float)(y*(1.0/300))) +
-                                        new SimplexNoise().genGrad(seed+1).generate((float)(x*(1.0/70)),(float)(y*(1.0/70))) +
-                                        new SimplexNoise().genGrad(seed+2).generate((float)(x*(1.0/25)),(float)(y*(1.0/25)))
+                                new SimplexNoise().genGrad(seed).generate(x*(1.0f/300),y*(1.0f/300)) +
+                                        new SimplexNoise().genGrad(seed+1).generate(x*(1.0f/70),y*(1.0f/70)) +
+                                        new SimplexNoise().genGrad(seed+2).generate(x*(1.0f/25),y*(1.0f/25))
                         )/3;
                         //map.layer(3).blackmap[x][y]=(float)ng3;
                         if(ng3>0.35)
                             map.setTile(l,x,y,0,0);
+                        if(ng3>0.3)
+                            if(map.getTileId(1,x,y)!=0)
+                                map.setTileId(1,x,y,65);
                     }
                 }
+
+                stage=lang=="en"?"Generate other caves":"Генерация других пещер";
+                percents=0;
+                int last_cave_x=0;
+                for(int x=0; x<map.layer(l).width; x++){
+                    percents+=100f/map.layer(l).width/2f;
+                    if(randomBoolean(0.01f) && x-last_cave_x>=50){
+                        last_cave_x=x;
+                        for(int y=map.layer(l).height; y>0; y--){
+                            if(map.getTileId(3,x,y)!=0){
+                                int cave_lenght=random(50,200);
+                                for(int lg=0; lg<cave_lenght; lg++){
+                                    int py=y-lg;
+                                    int px=Math.round(x+noise.generate((float)((x+py)*(1.0/100)*2),(x+py)*(1.0f/50))*5 + noise.generate((x+py)*(1.0f/50)*2,(x+py)*(1.0f/15))*2+new SimplexNoise().genGrad(seed).generate((x+py)*(1.0f/200),(x+py)*(1.0f/200))*100);
+                                    int r=Math.round((noise.generate((x+py)*(1.0f/50),(x+py)*(1.0f/50))+noise.generate((x+py)*(1.0f/20),(x+py)*(1.0f/20)))/2f*3+6);
+                                    for(int i=-r-1; i<=r+1; i++){
+                                        for(int j=-r-1; j<=r+1; j++){
+                                            if(Math.hypot(i,j)<=r+1){
+                                                map.setTileId(l,px+i,py+j,1);
+                                                if(map.getTileId(1,px+i,py+j)!=0)
+                                                    map.setTileId(1,px+i,py+j,65);
+                                            }
+                                        }
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+                last_cave_x=0;
+                for(int x=0; x<map.layer(l).width; x++){
+                    percents+=100f/map.layer(l).width/2f;
+                    if(randomBoolean(0.01f) && x-last_cave_x>=50){
+                        last_cave_x=x;
+                        for(int y=map.layer(l).height; y>0; y--){
+                            if(map.getTileId(3,x,y)!=0){
+                                int cave_lenght=random(50,200);
+                                for(int lg=0; lg<cave_lenght; lg++){
+                                    int py=y-lg;
+                                    int px=Math.round(x+noise.generate((float)((x+py)*(1.0/100)*2),(x+py)*(1.0f/50))*5 + noise.generate((x+py)*(1.0f/50)*2,(x+py)*(1.0f/15))*2+new SimplexNoise().genGrad(seed).generate((x+py)*(1.0f/200),(x+py)*(1.0f/200))*100);
+                                    int r=Math.round((noise.generate((x+py)*(1.0f/50),(x+py)*(1.0f/50))+noise.generate((x+py)*(1.0f/20),(x+py)*(1.0f/20)))/2f*3+6);
+                                    for(int i=-r; i<=r; i++){
+                                        for(int j=-r; j<=r; j++){
+                                            if(Math.hypot(i,j)<=r){
+                                                map.setTileId(l,px+i,py+j,0);
+                                            }
+                                        }
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+
                 stage=lang=="en"?"Setting tiles":"Настройка плиток";
                 percents=0;
                 for(int i=0; i<map.layer(l).width; i++)
@@ -104,8 +163,8 @@ public class WorldGenerator{
                                 spawn_tree(map,x,y+1);
                                 prev_tree_x=x;
                             }else{
-                                if(new SimplexNoise().genGrad(seed).generate((float)(x*(1.0/42)),(float)(x*(1.0/42)))>0.5){
-                                    int i=Math.round(new SimplexNoise().genGrad(seed+1).generate((float)(x*(1.0/42)),(float)(x*(1.0/42)))*7);
+                                if(new SimplexNoise().genGrad(seed).generate(x*(1.0f/42),x*(1.0f/42))>0.5){
+                                    int i=Math.round(new SimplexNoise().genGrad(seed+1).generate(x*(1.0f/42),x*(1.0f/42))*7);
                                     int t=random(20+3*i,20+3*(i+1));
                                     map.setTile(2,x,y+1,7,t);
                                 }else{
