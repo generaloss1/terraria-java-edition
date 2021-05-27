@@ -45,9 +45,9 @@ public class Main implements ApplicationListener{
 		cam=new Camera2D();
 		mouse=new Mouse();
 
-		int map_width=54;
-		int map_height=54;
-		int surface=27;
+		int map_width=500;
+		int map_height=200;
+		int surface=150;
 
 		//cam.fullScreen(true);
 		cam.translatePosition(map_width/2f*tile_pixel_size-Gdx.graphics.getWidth()/2f,surface*tile_pixel_size);
@@ -61,7 +61,7 @@ public class Main implements ApplicationListener{
 		map.setView(1,4);
 		map.setView(3,4);
 		WorldGenerator.generate(map,seed,surface);
-		WorldGenerator.isGenerated=true;
+		//WorldGenerator.isGenerated=true;
 		//map.load("/home/user/Downloads/world.wld");
 
 		LoadResources.loadResources();
@@ -83,8 +83,8 @@ public class Main implements ApplicationListener{
 
 		timer=new Timer();
 
-		Player.x=map.layer(3).width/2f;
-		Player.y=map.layer(3).height/2f;
+		Player.x=map_width/2f;
+		Player.y=surface;
 		Player.updateDrawPosition(map);
 	}
 
@@ -93,7 +93,7 @@ public class Main implements ApplicationListener{
 	public void render(){
 		float delt=Gdx.graphics.getDeltaTime()*75;
 		Gdx.gl.glClearColor(0,0,0,1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);controls(delt);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		cam.lookAt(Player.draw_x-cam.width/2+Player.w/2f,Player.draw_y-cam.height/2+Player.h/2f);
 		cam.update(sb);
 		sb.begin();
@@ -159,9 +159,9 @@ public class Main implements ApplicationListener{
 			font2.draw(sb,"F3 for more info; 1/2/3/4/6/0 + LMB for set tile;",cam.x+20,cam.y+20+font2.getLineHeight());
 		}
 
-		sb.end();
-
 		controls(delt);
+
+		sb.end();
 	}
 
 
@@ -235,19 +235,21 @@ public class Main implements ApplicationListener{
 
 		toolBar.scroll(mouse.scrolled());
 
-		float cam_speed=0.15f;
+		float cam_speed=0.3f;
 		if(Gdx.input.isKeyPressed(Input.Keys.W))
 			Player.translatePositio(0,cam_speed*delt,map);
+		if(Gdx.input.isKeyPressed(Input.Keys.S))
+			Player.translatePositio(0,-cam_speed*delt,map);
 		if(Gdx.input.isKeyPressed(Input.Keys.A)){
 			Player.translatePositio(-cam_speed*delt,0,map);
 			Player.lookside=true;
-		}
-		if(Gdx.input.isKeyPressed(Input.Keys.S))
-			Player.translatePositio(0,-cam_speed*delt,map);
-		if(Gdx.input.isKeyPressed(Input.Keys.D)){
+			Player.animationStage=1;
+		}else if(Gdx.input.isKeyPressed(Input.Keys.D)){
 			Player.translatePositio(cam_speed*delt,0,map);
 			Player.lookside=false;
-		}
+			Player.animationStage=1;
+		}else
+			Player.animationStage=0;
 
 		if(Gdx.input.isKeyPressed(Input.Keys.EQUALS) && map.layer(1).tiles_offset_x<=43.76){
 			map.layer(1).tiles_offset_x+=delt/4;

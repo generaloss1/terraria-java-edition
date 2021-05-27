@@ -10,7 +10,7 @@ public class Player{
     public static int w,h,draw_x,draw_y;
     public static float x,y;
     public static boolean useItem,lookside;
-    public static int timer,uitimer,animationStage=1,frame,hframe;
+    public static int timer,uitimer,animationStage,frame,hframe;
 
 
     public static void setPosition(float px,float py,TiledMap map){
