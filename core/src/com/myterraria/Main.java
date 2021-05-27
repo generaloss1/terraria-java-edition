@@ -27,7 +27,7 @@ public class Main implements ApplicationListener{
 	public static TiledMap map;
 	public TileManager tileManager;
 	public static int tile_pixel_size=32;//21.78,32,43.76
-	public long seed=81318082;//Maths.randomSeed(8);
+	public long seed=Maths.randomSeed(8);//81318082;//
 
 	public float time=0;
 
@@ -84,7 +84,12 @@ public class Main implements ApplicationListener{
 		timer=new Timer();
 
 		Player.x=map_width/2f;
-		Player.y=surface;
+		for(int y=map.layer(3).height; y>0; y--){
+			if(map.getTileId(3,(int)Player.x,y)!=0){
+				Player.y=y+1;
+				break;
+			}
+		}
 		Player.updateDrawPosition(map);
 	}
 

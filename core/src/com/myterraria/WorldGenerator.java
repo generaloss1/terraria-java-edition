@@ -62,6 +62,7 @@ public class WorldGenerator{
                             map.setTile(l,x,y,3,0);
                     }
                 }
+
                 stage=lang=="en"?"Generate caves":"Генерация пещер";
                 percents=0;
                 for(int x=0; x<map.layer(l).width; x++){
@@ -86,12 +87,13 @@ public class WorldGenerator{
                 stage=lang=="en"?"Generate other caves":"Генерация других пещер";
                 percents=0;
                 int last_cave_x=0;
+                //generator=new Random(seed);
                 for(int x=0; x<map.layer(l).width; x++){
                     percents+=100f/map.layer(l).width/2f;
                     if(randomBoolean(0.01f) && x-last_cave_x>=50){
                         last_cave_x=x;
                         for(int y=map.layer(l).height; y>0; y--){
-                            if(map.getTileId(3,x,y)!=0){
+                            if(map.getTileId(l,x,y)!=0){
                                 int cave_lenght=random(50,200);
                                 for(int lg=0; lg<cave_lenght; lg++){
                                     int py=y-lg;
@@ -113,12 +115,13 @@ public class WorldGenerator{
                     }
                 }
                 last_cave_x=0;
+                //generator=new Random(seed);
                 for(int x=0; x<map.layer(l).width; x++){
                     percents+=100f/map.layer(l).width/2f;
                     if(randomBoolean(0.01f) && x-last_cave_x>=50){
                         last_cave_x=x;
                         for(int y=map.layer(l).height; y>0; y--){
-                            if(map.getTileId(3,x,y)!=0){
+                            if(map.getTileId(l,x,y)!=0){
                                 int cave_lenght=random(50,200);
                                 for(int lg=0; lg<cave_lenght; lg++){
                                     int py=y-lg;
@@ -135,6 +138,13 @@ public class WorldGenerator{
                                 break;
                             }
                         }
+                    }
+                }
+
+                for(int i=0; i<map.layer(l).width; i++){
+                    for(int j=0; j<map.layer(l).height; j++){
+                        if(map.getTileId(l,i,j)==1 && map.getTileId(l,i+1,j)!=0 && map.getTileId(l,i,j+1)!=0 && map.getTileId(l,i-1,j)!=0 && map.getTileId(l,i,j-1)!=0)
+                            map.setTileId(l,i,j,2);
                     }
                 }
 
