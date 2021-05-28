@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.MathUtils;
 import com.myterraria.interfaces.*;
+import com.sun.tools.javac.api.DiagnosticFormatter;
 import engine.Assets;
 import engine.Camera2D;
 import engine.Mouse;
@@ -136,6 +137,8 @@ public class Main implements ApplicationListener{
 			time+=delt;
 			map.draw(tileManager,sb,cam);
 			ShaderProgram shader=Assets.getShader("shader");
+			Gdx.gl.glEnableVertexAttribArray(shader.getAttributeLocation("a_color"));
+			//Gdx.gl.glVertexAttribPointer(shader.getAttributeLocation("a_color"),4,Gdx.gl.GL_UNSIGNED_BYTE,Gdx.gl.GL_TRUE,STRIDE,DiagnosticFormatter.PositionKind.OFFSET(offset));
 			shader.begin();
 			shader.setUniformf("u_force",effect_force);
 			sb.setShader(shader);
