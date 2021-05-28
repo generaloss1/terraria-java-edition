@@ -90,7 +90,7 @@ public class WorldGenerator{
                 //generator=new Random(seed);
                 for(int x=0; x<map.layer(l).width; x++){
                     percents+=100f/map.layer(l).width/2f;
-                    if(randomBoolean(0.01f) && x-last_cave_x>=50){
+                    if(randomBoolean(0.05f) && x-last_cave_x>=50){
                         last_cave_x=x;
                         for(int y=map.layer(l).height; y>0; y--){
                             if(map.getTileId(l,x,y)!=0){

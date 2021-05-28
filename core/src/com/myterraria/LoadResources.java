@@ -104,6 +104,24 @@ public class LoadResources{
         Assets.loadTexture("player_last/shoes.png","shoes");
         Assets.loadTexture("player_last/undershirt.png","undershirt");
 
+        //SOUNDS
+
+        Assets.loadSound("sounds/Dig_0.wav","Dig_0");
+        Assets.loadSound("sounds/Dig_1.wav","Dig_1");
+        Assets.loadSound("sounds/Dig_2.wav","Dig_2");
+
+        Assets.loadSound("sounds/Tink_0.wav","Tink_0");
+        Assets.loadSound("sounds/Tink_1.wav","Tink_1");
+        Assets.loadSound("sounds/Tink_2.wav","Tink_2");
+
+        //MUSICS
+
+        Assets.loadMusic("music/04 - Overworld Day.mp3","music04");
+        Assets.loadMusic("music/05 - Alternate Day.mp3","music05");
+        Assets.loadMusic("music/06 - Rain.mp3","music06");
+        Assets.loadMusic("music/18 - Underground Corruption.mp3","music18");
+        Assets.loadMusic("music/31 - Underworld.mp3","music31");
+
     }
 
     public static void defineTilesAndItems(TileManager tileManager){

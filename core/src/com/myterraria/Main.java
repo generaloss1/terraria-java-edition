@@ -7,12 +7,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.MathUtils;
 import com.myterraria.interfaces.*;
 import engine.Assets;
 import engine.Camera2D;
 import engine.Mouse;
 import engine.Timer;
-import engine.math.Maths;
 import engine.tiledmap.TileManager;
 import engine.tiledmap.TiledMap;
 
@@ -27,7 +27,7 @@ public class Main implements ApplicationListener{
 	public static TiledMap map;
 	public TileManager tileManager;
 	public static int tile_pixel_size=32;//21.78,32,43.76
-	public long seed=Maths.randomSeed(8);//81318082;//
+	public long seed=33268463;//Maths.randomSeed(8);//81318082;//
 
 	public float time=0;
 
@@ -93,7 +93,13 @@ public class Main implements ApplicationListener{
 		Player.updateDrawPosition(map);
 	}
 
+
 	public int timer2;
+
+	public int effect_timer;
+	public float effect_force,effect_x;
+	public boolean effect;
+
 
 	public void render(){
 		float delt=Gdx.graphics.getDeltaTime()*75;
@@ -108,11 +114,36 @@ public class Main implements ApplicationListener{
 			sb.draw(Assets.getTexture("Background_0"),cam.x,cam.y,cam.width,cam.height);
 			//sb.setColor(1,1,1,1);
 
+
+			if(shadows_off){
+				int l=3;
+				for(int i=0; i<map.layer(l).width; i++)
+					for(int j=0; j<map.layer(l).height; j++){
+						map.layer(l).colormap[i][j][0]=1;
+						map.layer(l).colormap[i][j][1]=1;
+						map.layer(l).colormap[i][j][2]=1;
+					}
+				l=1;
+				for(int i=0; i<map.layer(l).width; i++)
+					for(int j=0; j<map.layer(l).height; j++){
+						map.layer(l).colormap[i][j][0]=1;
+						map.layer(l).colormap[i][j][1]=1;
+						map.layer(l).colormap[i][j][2]=1;
+					}
+			}
+
+
 			time+=delt;
-			ShaderProgram shader=Assets.getShader("shader");
-			shader.setUniformf("timer1",time);
-			//sb.setShader(shader);
 			map.draw(tileManager,sb,cam);
+			ShaderProgram shader=Assets.getShader("shader");
+			shader.begin();
+			shader.setUniformf("u_force",effect_force);
+			sb.setShader(shader);
+			if(effect){
+				map.draw(tileManager,sb,cam,effect_x,0);
+				map.draw(tileManager,sb,cam,-effect_x,0);
+			}
+			shader.end();
 			sb.setShader(null);
 
 			Player.draw(sb,map);
@@ -167,15 +198,39 @@ public class Main implements ApplicationListener{
 		controls(delt);
 
 		sb.end();
+
+		if(effect){
+			effect_timer+=delt;
+			float force=(float)Math.sin(effect_timer*Math.PI/500f);
+			effect_force=force*0.35f;
+			effect_x=15*force*(float)Math.sin(time);
+			if(effect_timer>500){
+				effect=false;
+				effect_timer=0;
+				effect_force=0;
+				effect_x=0;
+			}
+		}
 	}
 
 
-	public boolean f3_pressed,show_f3_info,prev_f3_pressed;
+	public boolean f3_pressed,show_f3_info,prev_f3_pressed,shadows_off;
 
 
 	public void controls(float delt){
 		int tx=(int)Math.floor((Gdx.input.getX()+cam.x)/map.layer(3).tiles_offset_x);
 		int ty=(int)Math.floor((Gdx.graphics.getHeight()-Gdx.input.getY()+cam.y)/map.layer(3).tiles_offset_y);
+
+		if(Gdx.input.isKeyJustPressed(Input.Keys.F))
+			effect=true;
+
+		if(Gdx.input.isKeyJustPressed(Input.Keys.F7) && !shadows_off){
+			shadows_off=true;
+			RecursiveLights.updateScreenLights(map,cam);
+		}else if(Gdx.input.isKeyJustPressed(Input.Keys.F7)){
+			shadows_off=false;
+			RecursiveLights.updateScreenLights(map,cam);
+		}
 
 		if(Gdx.input.isKeyPressed(Input.Keys.F3)){
 			f3_pressed=true;
@@ -220,25 +275,33 @@ public class Main implements ApplicationListener{
 
 		if(Gdx.input.isTouched()){
 
-			if(mouse.isRightPressed()){
-				if(!TiledMapUtils.setTile(map,cam,3,tx,ty,0))
-					if(!TiledMapUtils.setTile(map,cam,2,tx,ty,0))
-						TiledMapUtils.setTile(map,cam,1,tx,ty,0);
-
+			if(mouse.isRightPressed() && map.getTileId(3,tx,ty)!=0){
+				if(map.getTileId(3,tx,ty)==3)
+					Assets.getSound("Tink_"+MathUtils.random(0,2)).play();
+				else
+					Assets.getSound("Dig_"+MathUtils.random(0,2)).play();
+				TiledMapUtils.setTile(map,cam,3,tx,ty,0);
 			}
 			if(mouse.isLeftPressed()){
 				ItemStack item=toolBar.getSelectedItem();
 				if(item!=null){
 					Value item_type=ItemManager.getTag(item.id,"item_type");
-					if(item_type.getValue()=="tile"){
+					if(item_type.getValue()=="tile" && map.getTileId(3,tx,ty)==0){
 						Value tile_id=ItemManager.getTag(item.id,"tile_id");
 						TiledMapUtils.setTile(map,cam,3,tx,ty,(Integer)tile_id.getValue());
+						//if(map.getTileId(3,tx,ty)==3)
+						//	Assets.getSound("Tink_"+MathUtils.random(0,2)).play();
+						//else
+						Assets.getSound("Dig_"+MathUtils.random(0,2)).play();
 					}
 				}
 			}
 		}
 
-		toolBar.scroll(mouse.scrolled());
+		int scrolled=mouse.scrolled();
+		toolBar.scroll(scrolled);
+		if(scrolled!=0)
+			;
 
 		float cam_speed=0.3f;
 		if(Gdx.input.isKeyPressed(Input.Keys.W))

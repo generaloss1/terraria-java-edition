@@ -1,6 +1,8 @@
 package engine;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -100,6 +102,48 @@ public class Assets{
 
 
 
+    public static HashMap<String,Sound> sounds=new HashMap<>();
+    public static List<String> sounds_ids=new ArrayList<>();
+
+    public static void loadSound(String path,String id){
+        Sound sound=Gdx.audio.newSound(Gdx.files.internal(path));
+        sounds.put(id,sound);
+        sounds_ids.add(id);
+    }
+
+    public static Sound getSound(String id){
+        return sounds.get(id);
+    }
+
+    public static void disposeSounds(){
+        for(String id:sounds_ids)
+            sounds.get(id).dispose();
+        sounds.clear();
+    }
+
+
+
+    public static HashMap<String,Music> musics=new HashMap<>();
+    public static List<String> musics_ids=new ArrayList<>();
+
+    public static void loadMusic(String path,String id){
+        Music music=Gdx.audio.newMusic(Gdx.files.internal(path));
+        musics.put(id,music);
+        musics_ids.add(id);
+    }
+
+    public static Music getMusic(String id){
+        return musics.get(id);
+    }
+
+    public static void disposeMusics(){
+        for(String id:musics_ids)
+            musics.get(id).dispose();
+        musics.clear();
+    }
+
+
+
     public static HashMap<String,TextureRegion> texture_regions=new HashMap<>();
     public static List<String> texture_regions_ids=new ArrayList<>();
 
@@ -145,6 +189,9 @@ public class Assets{
         disposeTextures();
         disposeTextureRegs();
         disposeTTFs();
+        disposeShaders();
+        disposeSounds();
+        disposeMusics();
     }
 
 

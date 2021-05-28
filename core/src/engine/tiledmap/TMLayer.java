@@ -199,6 +199,44 @@ public class TMLayer implements Serializable{
 		}
 	}
 
+	public void draw(TileManager tileManager,SpriteBatch sb,Camera2D cam,float px,float py){
+		if(show){
+			Vector2i start=getStartRender(cam);
+			Vector2i end=getEndRender(cam);
+			for(int tx=start.x; tx<end.x; tx++){
+				for(int ty=start.y; ty<end.y; ty++){
+					if(map[tx][ty][0]!=0){
+						TileData t=tileManager.getTileData(map[tx][ty][0],map[tx][ty][1]);
+						if(t!=null && t.texture!=null){
+							sb.setColor(colormap[tx][ty][0],colormap[tx][ty][1],colormap[tx][ty][2],colormap[tx][ty][3]);
+							sb.draw(t.texture,px+tx*tiles_offset_x+t.offset_x*tiles_offset_x,py+ty*tiles_offset_y+t.offset_y*tiles_offset_y,t.width*tiles_offset_x,t.height*tiles_offset_y);
+						}
+					}
+				}
+			}
+			sb.setColor(1,1,1,1);
+		}
+	}
+
+	public void draw(TileManager tileManager,SpriteBatch sb,OrthographicCamera cam,float px,float py){
+		if(show){
+			Vector2i start=getStartRender(cam);
+			Vector2i end=getEndRender(cam);
+			for(int tx=start.x; tx<end.x; tx++){
+				for(int ty=start.y; ty<end.y; ty++){
+					if(map[tx][ty][0]!=0){
+						TileData t=tileManager.getTileData(map[tx][ty][0],map[tx][ty][1]);
+						if(t!=null && t.texture!=null){
+							sb.setColor(colormap[tx][ty][0],colormap[tx][ty][1],colormap[tx][ty][2],colormap[tx][ty][3]);
+							sb.draw(t.texture,px+tx*tiles_offset_x+t.offset_x*tiles_offset_x,py+ty*tiles_offset_y+t.offset_y*tiles_offset_y,t.width*tiles_offset_x,t.height*tiles_offset_y);
+						}
+					}
+				}
+			}
+			sb.setColor(1,1,1,1);
+		}
+	}
+
 
 	public void save(String path){
 		try{

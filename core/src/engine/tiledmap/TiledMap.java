@@ -30,6 +30,18 @@ public class TiledMap implements Serializable{
         }
     }
 
+    public void draw(TileManager tileManager,SpriteBatch sb,Camera2D cam,float x,float y){
+        for(TMLayer l:layers.values()){
+            l.draw(tileManager,sb,cam,x,y);
+        }
+    }
+
+    public void draw(TileManager tileManager,SpriteBatch sb,OrthographicCamera cam,float x,float y){
+        for(TMLayer l:layers.values()){
+            l.draw(tileManager,sb,cam,x,y);
+        }
+    }
+
     public void save(String path){
         try{
             FileOutputStream fout=new FileOutputStream(path);
