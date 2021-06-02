@@ -13,10 +13,7 @@ public class RecursiveLights{
 
 
 
-    private static List<int[]> lights=new ArrayList<>();
-
-    public static List<int[]> lights_stack=new ArrayList<>();
-    public static List<int[]> lights_remove_stack=new ArrayList<>();
+    public static List<int[]> lights=new ArrayList<>();
 
     public static int lt=3;
     public static int lw=1;
@@ -34,20 +31,18 @@ public class RecursiveLights{
         color=new Vector3f(1,1,1);
     }
 
-    public static int lightsSize(){
-        return lights.size();
-    }
-
-    public static int[] getLight(int i){
-        return lights.get(i);
-    }
-
     public static void addLight(int x,int y,int t,int a){
-        lights_stack.add(new int[]{x,y,t,a});
+        lights.add(new int[]{x,y,t,a});
     }
 
     public static void removeLight(int x,int y){
-        lights_remove_stack.add(new int[]{x,y});
+        for(int i=0; i<lights.size(); i++){
+            int[] lg=lights.get(i);
+            if(lg[0]==x && lg[1]==y){
+                lights.remove(i);
+                break;
+            }
+        }
     }
 
     public static void applyLightRec(TiledMap map,int l,int cx,int cy,int mrlt,int mrlw,float lastLight){
@@ -85,33 +80,6 @@ public class RecursiveLights{
     }
 
 
-
-    /*public static void updateWorldLights(TiledMap map){
-        int l=3;
-        int l2=1;
-        for(int x=0; x<map.layer(l).width; x++)
-            for(int y=0; y<map.layer(l).height; y++){
-                map.layer(l).colormap[x][y][0]=0;
-                map.layer(l).colormap[x][y][1]=0;
-                map.layer(l).colormap[x][y][2]=0;
-                map.layer(l2).colormap[x][y][0]=0;
-                map.layer(l2).colormap[x][y][1]=0;
-                map.layer(l2).colormap[x][y][2]=0;
-            }
-        color.set(1,1,1);
-        for(int x=0; x<map.layer(l).width; x++)
-            for(int y=map.layer(l).height-1; y>-1; y--)
-                if((map.getTileId(1,x,y)!=0 || map.getTileId(3,x,y)!=0) && map.getTileId(3,x,y)!=4){
-                    RecursiveLights.applyLightRec(map,3,x,y,6,24,1);
-                    RecursiveLights.applyLightRec(map,1,x,y,6,24,1);
-                    break;
-                }
-        color.set(0.4f,0.6f,1f);
-        for(int[] lg:lights){
-            RecursiveLights.applyLightRec(map,3,lg[0],lg[1],lg[2],lg[3],1);
-            RecursiveLights.applyLightRec(map,1,lg[0],lg[1],lg[2],lg[3],1);
-        }
-    }*/
 
     public static boolean update,inprocess;
     public static Vector2i upd_str,upd_end;
@@ -154,7 +122,8 @@ public class RecursiveLights{
                         }
                     }
                     color.set(1,1,1);
-                    for(int[] lg:lights){
+                    for(int i=0; i<lights.size(); i++){
+                        int lg[]=lights.get(i);
                         RecursiveLights.applyLightRec(map,3,lg[0],lg[1],lg[2],lg[3],1);
                         RecursiveLights.applyLightRec(map,2,lg[0],lg[1],lg[2],lg[3],1);
                         RecursiveLights.applyLightRec(map,1,lg[0],lg[1],lg[2],lg[3],1);
@@ -189,38 +158,12 @@ public class RecursiveLights{
 
 
     public static void update(TiledMap map,Camera2D cam){
-        boolean updScr=false;
-
-        if(!inprocess){
-            if(lights_stack.size()>0){
-                lights.addAll(lights_stack);
-                lights_stack.clear();
-                updScr=true;
-            }
-            if(lights_remove_stack.size()>0){
-                for(int[] xy:lights_remove_stack){
-                    for(int i=0; i<lights.size(); i++){
-                        int[] lg=lights.get(i);
-                        if(lg[0]==xy[0] && lg[1]==xy[1]){
-                            lights.remove(i);
-                            break;
-                        }
-                    }
-                }
-                lights_remove_stack.clear();
-                updScr=true;
-            }
-        }
-
         Vector2i v=map.layer(3).getStartRender(cam);
         if(v.x!=prevsx || v.y!=prevsy){
-            updScr=true;
+            updateScreenLights(map,cam);
             prevsx=v.x;
             prevsy=v.y;
         }
-
-        if(updScr)
-            updateScreenLights(map,cam);
 
         if(update){
             updateLightsOnMap(upd_str,upd_end,map);

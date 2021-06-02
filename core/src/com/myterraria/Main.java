@@ -312,11 +312,12 @@ public class Main implements ApplicationListener{
 		if(Gdx.input.isTouched()){
 
 			if(mouse.isRightPressed() && map.getTileId(3,tx,ty)!=0){
-				if(map.getTileId(3,tx,ty)==3)
-					Assets.getSound("Tink_"+MathUtils.random(0,2)).play();
-				else
-					Assets.getSound("Dig_"+MathUtils.random(0,2)).play();
-				TiledMapUtils.setTile(map,cam,3,tx,ty,0);
+				if(TiledMapUtils.setTile(map,cam,3,tx,ty,0)){
+					if(map.getTileId(3,tx,ty)==3)
+						Assets.getSound("Tink_"+MathUtils.random(0,2)).play();
+					else
+						Assets.getSound("Dig_"+MathUtils.random(0,2)).play();
+				}
 			}
 			if(mouse.isLeftPressed()){
 				ItemStack item=toolBar.getSelectedItem();
@@ -324,11 +325,8 @@ public class Main implements ApplicationListener{
 					Value item_type=ItemManager.getTag(item.id,"item_type");
 					if(item_type.getValue()=="tile" && map.getTileId(3,tx,ty)==0){
 						Value tile_id=ItemManager.getTag(item.id,"tile_id");
-						TiledMapUtils.setTile(map,cam,3,tx,ty,(Integer)tile_id.getValue());
-						//if(map.getTileId(3,tx,ty)==3)
-						//	Assets.getSound("Tink_"+MathUtils.random(0,2)).play();
-						//else
-						Assets.getSound("Dig_"+MathUtils.random(0,2)).play();
+						if(TiledMapUtils.setTile(map,cam,3,tx,ty,(Integer)tile_id.getValue()))
+							Assets.getSound("Dig_"+MathUtils.random(0,2)).play();
 					}
 				}
 			}
@@ -347,15 +345,15 @@ public class Main implements ApplicationListener{
 
 		float cam_speed=0.3f;
 		if(Gdx.input.isKeyPressed(Input.Keys.W))
-			Player.translatePositio(0,cam_speed*delt,map);
+			Player.translatePosition(0,cam_speed*delt,map);
 		if(Gdx.input.isKeyPressed(Input.Keys.S))
-			Player.translatePositio(0,-cam_speed*delt,map);
+			Player.translatePosition(0,-cam_speed*delt,map);
 		if(Gdx.input.isKeyPressed(Input.Keys.A)){
-			Player.translatePositio(-cam_speed*delt,0,map);
+			Player.translatePosition(-cam_speed*delt,0,map);
 			Player.lookside=true;
 			Player.walk_animation=true;
 		}else if(Gdx.input.isKeyPressed(Input.Keys.D)){
-			Player.translatePositio(cam_speed*delt,0,map);
+			Player.translatePosition(cam_speed*delt,0,map);
 			Player.lookside=false;
 			Player.walk_animation=true;
 		}else

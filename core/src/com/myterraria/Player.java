@@ -25,7 +25,7 @@ public class Player{
         updateDrawPosition(map);
     }
 
-    public static void translatePositio(float tx,float ty,TiledMap map){
+    public static void translatePosition(float tx,float ty,TiledMap map){
         x+=tx;
         y+=ty;
         updateDrawPosition(map);
