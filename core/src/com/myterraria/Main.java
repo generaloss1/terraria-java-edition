@@ -9,13 +9,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.MathUtils;
 import com.myterraria.interfaces.*;
-import com.sun.tools.javac.api.DiagnosticFormatter;
 import engine.Assets;
 import engine.Camera2D;
 import engine.Mouse;
 import engine.Timer;
+import engine.math.Maths;
 import engine.tiledmap.TileManager;
 import engine.tiledmap.TiledMap;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main implements ApplicationListener{
 
@@ -28,7 +31,7 @@ public class Main implements ApplicationListener{
 	public static TiledMap map;
 	public TileManager tileManager;
 	public static int tile_pixel_size=32;//21.78,32,43.76
-	public long seed=33268463;//Maths.randomSeed(8);//81318082;//
+	public long seed=Maths.randomSeed(8);//81318082;//33268463;
 
 	public float time=0;
 
@@ -104,6 +107,7 @@ public class Main implements ApplicationListener{
 
 	public void render(){
 		float delt=Gdx.graphics.getDeltaTime()*75;
+		time+=delt;
 		Gdx.gl.glClearColor(0,0,0,1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		cam.lookAt(Player.draw_x-cam.width/2+Player.w/2f,Player.draw_y-cam.height/2+Player.h/2f);
@@ -133,22 +137,24 @@ public class Main implements ApplicationListener{
 					}
 			}
 
-
-			time+=delt;
 			map.draw(tileManager,sb,cam);
-			ShaderProgram shader=Assets.getShader("shader");
-			Gdx.gl.glEnableVertexAttribArray(shader.getAttributeLocation("a_color"));
-			//Gdx.gl.glVertexAttribPointer(shader.getAttributeLocation("a_color"),4,Gdx.gl.GL_UNSIGNED_BYTE,Gdx.gl.GL_TRUE,STRIDE,DiagnosticFormatter.PositionKind.OFFSET(offset));
-			shader.begin();
-			shader.setUniformf("u_force",effect_force);
-			sb.setShader(shader);
-			if(effect){
-				map.draw(tileManager,sb,cam,effect_x,0);
-				map.draw(tileManager,sb,cam,-effect_x,0);
-			}
-			shader.end();
-			sb.setShader(null);
 
+			if(effect){
+				ShaderProgram shader=Assets.getShader("shader");
+				shader.begin();
+				shader.setUniformf("u_force",effect_force);
+				sb.setShader(shader);
+
+				map.layer(3).draw(tileManager,sb,cam,effect_x,0);
+				map.layer(3).draw(tileManager,sb,cam,-effect_x,0);
+				map.layer(1).draw(tileManager,sb,cam,effect_x,0);
+				map.layer(1).draw(tileManager,sb,cam,-effect_x,0);
+				map.layer(2).draw(tileManager,sb,cam,effect_x,0);
+				map.layer(2).draw(tileManager,sb,cam,-effect_x,0);
+
+				shader.end();
+				sb.setShader(null);
+			}
 			Player.draw(sb,map);
 
 
@@ -206,7 +212,7 @@ public class Main implements ApplicationListener{
 			effect_timer+=delt;
 			float force=(float)Math.sin(effect_timer*Math.PI/500f);
 			effect_force=force*0.35f;
-			effect_x=15*force*(float)Math.sin(time);
+			effect_x=force*(float)Math.sin(time)*map.layer(3).tiles_offset_x/1.61f;
 			if(effect_timer>500){
 				effect=false;
 				effect_timer=0;
@@ -252,24 +258,18 @@ public class Main implements ApplicationListener{
 			float usedBytes=Float.parseFloat(new String(""+(Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory()/1048576f)).substring(0,5));
 			BitmapFont font=Assets.getTTF("font2");
 
-			String text1="FPS: "+Gdx.graphics.getFramesPerSecond();
-			String text2="Seed: "+seed;
-			String text3="Memory: "+usedBytes+" Mb";
-			String text4="World size: "+map.layer(3).width+", "+map.layer(3).height;
-			String text5="Tile x: "+tx+", y: "+ty;
-			String text6="Game time: "+hours+":"+minutes;
-			String text7="cell: "+toolBar.selected_cell_position;
+			List<String> params=new ArrayList<>();
+			params.add("FPS: "+Gdx.graphics.getFramesPerSecond());
+			params.add("Seed: "+seed);
+			params.add("Memory: "+usedBytes+" Mb");
+			params.add("World size: "+map.layer(3).width+", "+map.layer(3).height);
+			params.add("Tile x: "+tx+", y: "+ty);
+			params.add("Game time: "+hours+":"+minutes);
+			params.add("frame: "+Player.hands_frameX);
 
 			sb.setShader(Assets.getShader("inv_shader"));
-
-			font.draw(sb,text1,cam.x+20,cam.y+cam.height-font.getCache().addText(text1,0,0).height);
-			font.draw(sb,text2,cam.x+20,cam.y+cam.height-font.getCache().addText(text2,0,0).height-40);
-			font.draw(sb,text3,cam.x+20,cam.y+cam.height-font.getCache().addText(text3,0,0).height-40*2);
-			font.draw(sb,text4,cam.x+20,cam.y+cam.height-font.getCache().addText(text4,0,0).height-40*3);
-			font.draw(sb,text5,cam.x+20,cam.y+cam.height-font.getCache().addText(text5,0,0).height-40*4);
-			font.draw(sb,text6,cam.x+20,cam.y+cam.height-font.getCache().addText(text6,0,0).height-40*5);
-			font.draw(sb,text7,cam.x+20,cam.y+cam.height-font.getCache().addText(text7,0,0).height-40*6);
-
+			for(int i=0; i<params.size(); i++)
+				font.draw(sb,params.get(i),cam.x+20,cam.y+cam.height-font.getCache().addText(params.get(i),0,0).height-40*i);
 			sb.setShader(null);
 		}
 
@@ -304,7 +304,13 @@ public class Main implements ApplicationListener{
 		int scrolled=mouse.scrolled();
 		toolBar.scroll(scrolled);
 		if(scrolled!=0)
-			;
+			Assets.getSound("Mech_0").play();
+		for(int i=0; i<toolBar.size; i++)
+			if(Gdx.input.isKeyJustPressed(i==9?7:i+8))
+				if(toolBar.selected_cell_position!=i){
+					toolBar.selected_cell_position=i;
+					Assets.getSound("Mech_0").play();
+				}
 
 		float cam_speed=0.3f;
 		if(Gdx.input.isKeyPressed(Input.Keys.W))
@@ -314,13 +320,13 @@ public class Main implements ApplicationListener{
 		if(Gdx.input.isKeyPressed(Input.Keys.A)){
 			Player.translatePositio(-cam_speed*delt,0,map);
 			Player.lookside=true;
-			Player.animationStage=1;
+			Player.walk_animation=true;
 		}else if(Gdx.input.isKeyPressed(Input.Keys.D)){
 			Player.translatePositio(cam_speed*delt,0,map);
 			Player.lookside=false;
-			Player.animationStage=1;
+			Player.walk_animation=true;
 		}else
-			Player.animationStage=0;
+			Player.walk_animation=false;
 
 		if(Gdx.input.isKeyPressed(Input.Keys.EQUALS) && map.layer(1).tiles_offset_x<=43.76){
 			map.layer(1).tiles_offset_x+=delt/4;

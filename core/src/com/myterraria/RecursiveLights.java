@@ -1,6 +1,7 @@
 package com.myterraria;
 
 import engine.Camera2D;
+import engine.math.vectors.Vector2f;
 import engine.math.vectors.Vector2i;
 import engine.math.vectors.Vector3f;
 import engine.tiledmap.TiledMap;
@@ -12,7 +13,10 @@ public class RecursiveLights{
 
 
 
-    public static List<int[]> lights=new ArrayList<>();
+    private static List<int[]> lights=new ArrayList<>();
+
+    public static List<int[]> lights_stack=new ArrayList<>();
+    public static List<int[]> lights_remove_stack=new ArrayList<>();
 
     public static int lt=3;
     public static int lw=1;
@@ -28,6 +32,22 @@ public class RecursiveLights{
     public static void init(TiledMap map){
         colormap=new float[5][map.layer(3).width][map.layer(3).height];
         color=new Vector3f(1,1,1);
+    }
+
+    public static int lightsSize(){
+        return lights.size();
+    }
+
+    public static int[] getLight(int i){
+        return lights.get(i);
+    }
+
+    public static void addLight(int x,int y,int t,int a){
+        lights_stack.add(new int[]{x,y,t,a});
+    }
+
+    public static void removeLight(int x,int y){
+        lights_remove_stack.add(new int[]{x,y});
     }
 
     public static void applyLightRec(TiledMap map,int l,int cx,int cy,int mrlt,int mrlw,float lastLight){
@@ -66,7 +86,7 @@ public class RecursiveLights{
 
 
 
-    public static void updateWorldLights(TiledMap map){
+    /*public static void updateWorldLights(TiledMap map){
         int l=3;
         int l2=1;
         for(int x=0; x<map.layer(l).width; x++)
@@ -91,56 +111,117 @@ public class RecursiveLights{
             RecursiveLights.applyLightRec(map,3,lg[0],lg[1],lg[2],lg[3],1);
             RecursiveLights.applyLightRec(map,1,lg[0],lg[1],lg[2],lg[3],1);
         }
+    }*/
+
+    public static boolean update,inprocess;
+    public static Vector2i upd_str,upd_end;
+
+
+
+    public static void updateScreenLights(final TiledMap map,final Camera2D cam){
+        if(!inprocess){
+            inprocess=true;
+            new Thread(new Runnable(){
+                public void run(){
+                    int l=3;
+                    Vector2i str=map.layer(3).getStartRender(cam,-10);
+                    Vector2i end=map.layer(3).getEndRender(cam,10);
+                    for(int x=str.x; x<end.x; x++){
+                        for(int y=str.y; y<end.y; y++){
+                            colormap[3][x][y]=0;
+                            colormap[2][x][y]=0;
+                            colormap[1][x][y]=0;
+                        }
+                    }
+                    color.set(1,1,1);
+                    for(int x=str.x; x<end.x; x++){
+                        for(int y=map.layer(l).height-1; y>-1; y--){
+                            boolean b=true;
+                            for(int i=0; i<ignoreTilesU.length; i+=2)
+                                if(map.getTileId(ignoreTilesU[i+1],x,y)==ignoreTilesU[i])
+                                    b=false;
+                            if((map.getTileId(1,x,y)!=0 || map.getTileId(3,x,y)!=0) && b){
+                                RecursiveLights.applyLightRec(map,3,x,y,6,24,1);
+                                RecursiveLights.applyLightRec(map,2,x,y,6,24,1);
+                                RecursiveLights.applyLightRec(map,1,x,y,6,24,1);
+                                break;
+                            }else if(map.getTileId(2,x,y)==5)
+                                colormap[2][x][y]=1;
+                        }
+                    }
+                    color.set(1,1,1);
+                    for(int[] lg:lights){
+                        RecursiveLights.applyLightRec(map,3,lg[0],lg[1],lg[2],lg[3],1);
+                        RecursiveLights.applyLightRec(map,2,lg[0],lg[1],lg[2],lg[3],1);
+                        RecursiveLights.applyLightRec(map,1,lg[0],lg[1],lg[2],lg[3],1);
+                    }
+                    upd_str=str;
+                    upd_end=end;
+                    update=true;
+                }
+            }).start();
+        }
     }
 
-    public static void updateScreenLights(TiledMap map,Camera2D cam){
-        int l=3;
-        int l2=1;
-        Vector2i str=map.layer(3).getStartRender(cam,-10);
-        Vector2i end=map.layer(3).getEndRender(cam,10);
-        for(int x=str.x; x<end.x; x++)
-            for(int y=str.y; y<end.y; y++){
-                colormap[3][x][y]=0;
-                colormap[1][x][y]=0;
-            }
-        color.set(1,1,1);
-        for(int x=str.x; x<end.x; x++)
-            for(int y=map.layer(l).height-1; y>-1; y--){
-                boolean b=true;
-                for(int i=0; i<ignoreTilesU.length; i+=2)
-                    if(map.getTileId(ignoreTilesU[i+1],x,y)==ignoreTilesU[i])
-                        b=false;
-                if((map.getTileId(1,x,y)!=0 || map.getTileId(3,x,y)!=0) && b){
-                    RecursiveLights.applyLightRec(map,3,x,y,6,24,1);
-                    RecursiveLights.applyLightRec(map,1,x,y,6,24,1);
-                    break;
-                }
-            }
-        color.set(1,1,1);
-        for(int[] lg:lights){
-            RecursiveLights.applyLightRec(map,3,lg[0],lg[1],lg[2],lg[3],1);
-            RecursiveLights.applyLightRec(map,1,lg[0],lg[1],lg[2],lg[3],1);
-        }
-        for(int x=str.x; x<end.x; x++)
-            for(int y=str.y; y<end.y; y++){
-                map.layer(3).colormap[x][y][0]=colormap[l][x][y];
-                map.layer(3).colormap[x][y][1]=colormap[l][x][y];
-                map.layer(3).colormap[x][y][2]=colormap[l][x][y];
 
-                map.layer(1).colormap[x][y][0]=colormap[l2][x][y];
-                map.layer(1).colormap[x][y][1]=colormap[l2][x][y];
-                map.layer(1).colormap[x][y][2]=colormap[l2][x][y];
+
+    private static void updateLightsOnMap(Vector2i str,Vector2i end,TiledMap map){
+        for(int x=str.x; x<end.x; x++)
+            for(int y=str.y; y<end.y; y++){
+                map.layer(3).colormap[x][y][0]=colormap[1][x][y];
+                map.layer(3).colormap[x][y][1]=colormap[1][x][y];
+                map.layer(3).colormap[x][y][2]=colormap[1][x][y];
+
+                map.layer(2).colormap[x][y][0]=colormap[2][x][y];
+                map.layer(2).colormap[x][y][1]=colormap[2][x][y];
+                map.layer(2).colormap[x][y][2]=colormap[2][x][y];
+
+                map.layer(1).colormap[x][y][0]=colormap[3][x][y];
+                map.layer(1).colormap[x][y][1]=colormap[3][x][y];
+                map.layer(1).colormap[x][y][2]=colormap[3][x][y];
             }
     }
 
 
 
     public static void update(TiledMap map,Camera2D cam){
+        boolean updScr=false;
+
+        if(!inprocess){
+            if(lights_stack.size()>0){
+                lights.addAll(lights_stack);
+                lights_stack.clear();
+                updScr=true;
+            }
+            if(lights_remove_stack.size()>0){
+                for(int[] xy:lights_remove_stack){
+                    for(int i=0; i<lights.size(); i++){
+                        int[] lg=lights.get(i);
+                        if(lg[0]==xy[0] && lg[1]==xy[1]){
+                            lights.remove(i);
+                            break;
+                        }
+                    }
+                }
+                lights_remove_stack.clear();
+                updScr=true;
+            }
+        }
+
         Vector2i v=map.layer(3).getStartRender(cam);
         if(v.x!=prevsx || v.y!=prevsy){
-            RecursiveLights.updateScreenLights(map,cam);
+            updScr=true;
             prevsx=v.x;
             prevsy=v.y;
+        }
+
+        if(updScr)
+            updateScreenLights(map,cam);
+
+        if(update){
+            updateLightsOnMap(upd_str,upd_end,map);
+            update=false;
+            inprocess=false;
         }
     }
 

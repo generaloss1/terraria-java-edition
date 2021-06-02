@@ -93,13 +93,7 @@ public class TiledMapUtils{
             if(id==6 || id==8)
                 l=1;
             if(map.getTileId(l,x,y)==4){
-                for(int i=0; i<RecursiveLights.lights.size(); i++){
-                    int[] lg=RecursiveLights.lights.get(i);
-                    if(lg[0]==x && lg[1]==y){
-                        RecursiveLights.lights.remove(i);
-                        break;
-                    }
-                }
+                RecursiveLights.removeLight(x,y);
             }
             map.setTileId(l,x,y,id);
             if(map.getTileId(l,x,y)!=5 && map.getTileId(l,x,y)!=7)
@@ -113,7 +107,7 @@ public class TiledMapUtils{
             if(map.getTileId(l,x,y-1)!=5 && map.getTileId(l,x,y-1)!=7)
                 map.setTileData(l,x,y-1,TiledMapUtils.data(map,l,x,y-1));
             if(id==4){
-                RecursiveLights.lights.add(new int[]{x,y,6,22});
+                RecursiveLights.addLight(x,y,6,22);
             }
             RecursiveLights.updateScreenLights(map,cam);
             return true;

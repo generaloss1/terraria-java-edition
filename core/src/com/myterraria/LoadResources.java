@@ -92,16 +92,10 @@ public class LoadResources{
 
         //LAST_PLAYER
 
-        Assets.loadTexture("player_last/eyes.png","eyes");
-        Assets.loadTexture("player_last/eyes2.png","eyes2");
-        Assets.loadTexture("player_last/hair1.png","hair1");
         Assets.loadTexture("player_last/hands.png","hands");
         Assets.loadTexture("player_last/hands2.png","hands2");
         Assets.loadTexture("player_last/hands3.png","hands3");
-        Assets.loadTexture("player_last/head.png","head");
-        Assets.loadTexture("player_last/pants.png","pants");
         Assets.loadTexture("player_last/shirt.png","shirt");
-        Assets.loadTexture("player_last/shoes.png","shoes");
         Assets.loadTexture("player_last/undershirt.png","undershirt");
 
         //SOUNDS
@@ -114,6 +108,8 @@ public class LoadResources{
         Assets.loadSound("sounds/Tink_1.wav","Tink_1");
         Assets.loadSound("sounds/Tink_2.wav","Tink_2");
 
+        Assets.loadSound("sounds/Mech_0.wav","Mech_0");
+
         //MUSICS
 
         Assets.loadMusic("music/04 - Overworld Day.mp3","music04");
@@ -121,6 +117,35 @@ public class LoadResources{
         Assets.loadMusic("music/06 - Rain.mp3","music06");
         Assets.loadMusic("music/18 - Underground Corruption.mp3","music18");
         Assets.loadMusic("music/31 - Underworld.mp3","music31");
+
+        //PLAYER
+
+        Assets.loadTexture("player/Player_0_0.png","Player_0_0");//
+        Assets.loadTexture("player/Player_0_1.png","Player_0_1");//
+        Assets.loadTexture("player/Player_0_2.png","Player_0_2");//
+        //Assets.loadTexture("player/Player_0_3.png","Player_0_3");
+        //Assets.loadTexture("player/Player_0_4.png","Player_0_4");
+        Assets.loadTexture("player/Player_0_5.png","Player_0_5");//
+        Assets.loadTexture("player/Player_0_6.png","Player_0_6");
+        Assets.loadTexture("player/Player_0_7.png","Player_0_7");//
+        Assets.loadTexture("player/Player_0_8.png","Player_0_8");
+        //Assets.loadTexture("player/Player_0_9.png","Player_0_9");//
+        Assets.loadTexture("player/Player_0_10.png","Player_0_10");//
+        Assets.loadTexture("player/Player_0_11.png","Player_0_11");
+        Assets.loadTexture("player/Player_0_12.png","Player_0_12");
+        //Assets.loadTexture("player/Player_0_13.png","Player_0_13");
+        //Assets.loadTexture("player/Player_0_14.png","Player_0_14");
+        //Assets.loadTexture("player/Player_0_15.png","Player_0_15");
+
+        //HAIR
+
+        Assets.loadTexture("player/hair/Player_Hair_29.png","Hair_29");
+
+        //ARMOR
+
+        Assets.loadTexture("armor/Armor_187.png","Armor_187");
+        Assets.loadTexture("armor/Armor_Head_185.png","Armor_Head_185");
+        Assets.loadTexture("armor/Armor_Legs_127.png","Armor_Legs_127");
 
     }
 

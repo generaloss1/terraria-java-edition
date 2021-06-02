@@ -30,9 +30,6 @@ public class ToolBar implements Interface{
 
     public void draw(SpriteBatch sb,Camera2D cam){
         y=Math.round(cam.height)-offset-cell_size-cell_size/2;
-        for(int i=0; i<size; i++)
-            if(Gdx.input.isKeyJustPressed(i==9?7:i+8))
-                selected_cell_position=i;
 
         for(int i=0; i<size; i++){
             sb.setColor(1,1,1,0.9f);

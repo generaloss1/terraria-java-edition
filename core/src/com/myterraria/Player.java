@@ -1,5 +1,8 @@
 package com.myterraria;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import engine.Assets;
 import engine.tiledmap.TiledMap;
@@ -9,8 +12,11 @@ public class Player{
 
     public static int w,h,draw_x,draw_y;
     public static float x,y;
-    public static boolean useItem,lookside;
-    public static int timer,uitimer,animationStage,frame,hframe;
+    public static int timer1,timer2,counter1,legs_frame,hands_frameX,hands_frameY,y_offset;
+
+    public static boolean armor_legs,armor,armor_head,fall_animation,walk_animation,useItem_animation,lookside;
+
+    public static Color skin_color=new Color(0.600f,0.427f,0.525f,1);
 
 
     public static void setPosition(float px,float py,TiledMap map){
@@ -33,85 +39,136 @@ public class Player{
     public static void draw(SpriteBatch sb,TiledMap map){
         int layer=3;
 
-        w=Math.round(map.layer(layer).tiles_offset_x*2*(32f/32));
-        h=Math.round(map.layer(layer).tiles_offset_y*3*(52f/50));
+        w=Math.round(map.layer(layer).tiles_offset_x*2*(40f/(2*16)));
+        h=Math.round(map.layer(layer).tiles_offset_y*3*(52f/(3*16)));
 
-        int fw=32;
+        int fw=40;
         int fh=50;
-        int fx=4;
+        int fx=0;
         int fy=4;
-        //SHIRT
-        sb.setColor(1f,1f,1f,1);
-        sb.draw(Assets.getTexture("shirt"),draw_x,draw_y,w/2f,h/2f,w,h,1,1,0,fx,fy+56*hframe,fw,fh,lookside,false);
-        //sb.draw(new TextureRegion(Assets.getTexture("shirt"),fx,fy+56*hframe,fw,fh),x,y,w,h);
 
-        sb.setColor(1f,0.85f,0.8f,1);
-        sb.draw(Assets.getTexture("undershirt"),draw_x,draw_y,w/2f,h/2f,w,h,1,1,0,fx,fy+56*hframe,fw,fh,lookside,false);
-        //HANDS
-        sb.setColor(0.9875f,0.78f,0.63f,1);
-        sb.draw(Assets.getTexture("hands"),draw_x,draw_y,w/2f,h/2f,w,h,1,1,0,fx,fy+56*hframe,fw,fh,lookside,false);
-
-        //HEAD
-        sb.setColor(0.9875f,0.78f,0.63f,1);
-        sb.draw(Assets.getTexture("head"),draw_x,draw_y,w/2f,h/2f,w,h,1,1,0,fx,fy+56*(useItem?0:frame),fw,fh,lookside,false);
-        //EYES
-        sb.setColor(0.05f,0.34f,0.84f,1);
-        sb.draw(Assets.getTexture("eyes"),draw_x,draw_y,w/2f,h/2f,w,h,1,1,0,fx,fy+56*(useItem?0:frame),fw,fh,lookside,false);
-
-        sb.setColor(1,1,1,1);
-        sb.draw(Assets.getTexture("eyes2"),draw_x,draw_y,w/2f,h/2f,w,h,1,1,0,fx,fy+56*(useItem?0:frame),fw,fh,lookside,false);
-        //HAIR
-        sb.setColor(0.2f,0.2f,0.2f,1);
-        sb.draw(Assets.getTexture("hair1"),draw_x,draw_y,w/2f,h/2f,w,h,1,1,0,fx,fy+((animationStage==1&&frame>=6)?56*(useItem?0:frame-6):0),fw,fh,lookside,false);
-
-        //HANDS2,3
-        sb.setColor(1f,1f,1f,1);
-        sb.draw(Assets.getTexture("hands2"),draw_x,draw_y,w/2f,h/2f,w,h,1,1,0,fx,fy+56*hframe,fw,fh,lookside,false);
-
-        sb.setColor(0.9875f,0.78f,0.63f,1);
-        sb.draw(Assets.getTexture("hands3"),draw_x,draw_y,w/2f,h/2f,w,h,1,1,0,fx,fy+56*hframe,fw,fh,lookside,false);
-
-        //LEGS
-        sb.setColor(1f,1f,1f,1);
-        sb.draw(Assets.getTexture("pants"),draw_x,draw_y,w/2f,h/2f,w,h,1,1,0,fx,fy+56*frame,fw,fh,lookside,false);
-
-        sb.setColor(1f,0.85f,0.8f,1);
-        sb.draw(Assets.getTexture("shoes"),draw_x,draw_y,w/2f,h/2f,w,h,1,1,0,fx,fy+56*frame,fw,fh,lookside,false);
-
-        sb.setColor(1,1,1,1);
-
-        if(animationStage==1){
-            timer++;
-            if(timer>4){
-                timer=0;
-
-                if(frame<6)
-                    frame=6;
-                else
-                    frame++;
-                if(frame>19)
-                    frame=6;
-            }
-        }else if(animationStage==2)
-            frame=5;
+        if(Gdx.input.isKeyPressed(Input.Keys.Z))
+            fall_animation=true;
         else
-            frame=0;
+            fall_animation=false;
 
-        if(useItem){
-            uitimer++;
-            if(uitimer>4){
-                uitimer=0;
+        //                         LEGS
+        if(!armor_legs){
+            sb.setColor(skin_color);
+            sb.draw(Assets.getTexture("Player_0_10"),draw_x,draw_y,w/2f,h/2f,w,h,1,1,0,fx,fy+56*legs_frame,fw,fh,lookside,false);
 
-                if(hframe<1||hframe>4){
-                    hframe=1;
-                }else{
-                    hframe++;
-                    if(hframe>4)
-                        hframe=1;
+            sb.setColor(0.4f,0.4f,0.4f,1);
+            sb.draw(Assets.getTexture("Player_0_11"),draw_x,draw_y,w/2f,h/2f,w,h,1,1,0,fx,fy+56*legs_frame,fw,fh,lookside,false);
+
+            //BOOTS
+            sb.setColor(1f,1f,1f,1);
+            sb.draw(Assets.getTexture("Player_0_12"),draw_x,draw_y,w/2f,h/2f,w,h,1,1,0,fx,fy+56*legs_frame,fw,fh,lookside,false);
+        }else{
+            sb.setColor(1,1,1,1);
+            sb.draw(Assets.getTexture("Armor_Legs_127"),draw_x,draw_y,w/2f,h/2f,w,h,1,1,0,fx,fy+56*legs_frame,fw,fh,lookside,false);
+        }
+
+        //                           BODY
+
+        if(!armor){
+            //BACK HAND
+            sb.setColor(skin_color);
+            sb.draw(Assets.getTexture("Player_0_7"),draw_x,draw_y,w/2f,h/2f,w,h,1,1,0,fx+40*hands_frameX,fy+56*(hands_frameY+2)+2*y_offset,fw,fh,lookside,false);
+            //HAND
+            sb.setColor(skin_color);
+            sb.draw(Assets.getTexture("Player_0_7"),draw_x,draw_y,w/2f,h/2f,w,h,1,1,0,fx+40*hands_frameX,fy+56*hands_frameY+2*y_offset,fw,fh,lookside,false);
+
+            //UNDERSHIRT
+            sb.setColor(1f,1f,1f,1);
+            sb.draw(Assets.getTexture("Player_0_6"),draw_x,draw_y,w/2f,h/2f,w,h,1,1,0,fx+(fall_animation?40:0),fy+((legs_frame >6 && legs_frame <10)||(legs_frame >13 && legs_frame <17)?2:0),fw,fh,lookside,false);
+
+            //SLEEVE
+            sb.setColor(0.4f,0.4f,0.4f,1);
+            sb.draw(Assets.getTexture("Player_0_8"),draw_x,draw_y,w/2f,h/2f,w,h,1,1,0,fx+40*hands_frameX,fy+56*hands_frameY+2*y_offset,fw,fh,lookside,false);
+        }else{
+            sb.setColor(1,1,1,1);
+            sb.draw(Assets.getTexture("Armor_187"),draw_x,draw_y,w/2f,h/2f,w,h,1,1,0,fx,fy+2*y_offset,fw,fh,lookside,false);
+
+            sb.setColor(1,1,1,1);
+            sb.draw(Assets.getTexture("Armor_187"),draw_x,draw_y,w/2f,h/2f,w,h,1,1,0,fx+40*hands_frameX,fy+56*hands_frameY+2*y_offset,fw,fh,lookside,false);
+
+            sb.setColor(1,1,1,1);
+            sb.draw(Assets.getTexture("Armor_187"),draw_x,draw_y,w/2f,h/2f,w,h,1,1,0,fx,fy+56+2*y_offset,fw,fh,lookside,false);
+        }
+
+        //                                HEAD
+
+        sb.setColor(skin_color);
+        sb.draw(Assets.getTexture("Player_0_0"),draw_x,draw_y,w/2f,h/2f,w,h,1,1,0,fx,fy+56*(useItem_animation?0:legs_frame),fw,fh,lookside,false);
+
+        //EYES
+        sb.setColor(0.682f,0.721f,0.709f,1);
+        sb.draw(Assets.getTexture("Player_0_2"),draw_x,draw_y,w/2f,h/2f,w,h,1,1,0,fx,fy+56*(useItem_animation?0:legs_frame),fw,fh,lookside,false);
+
+        sb.setColor(1,1,1,1);
+        sb.draw(Assets.getTexture("Player_0_1"),draw_x,draw_y,w/2f,h/2f,w,h,1,1,0,fx,fy+56*(useItem_animation?0:legs_frame),fw,fh,lookside,false);
+
+        //HAIR
+        if(!armor_head){
+            sb.setColor(0.247f,0.152f,0.360f,1);
+            sb.draw(Assets.getTexture("Hair_29"),draw_x,draw_y,w/2f,h/2f,w,h,1,1,0,fx,fy+((walk_animation && legs_frame>=6)?56*(useItem_animation?0:legs_frame-6):0),fw,fh,lookside,false);
+        }else{
+            sb.setColor(1,1,1,1);
+            sb.draw(Assets.getTexture("Armor_Head_185"),draw_x,draw_y,w/2f,h/2f,w,h,1,1,0,fx,fy+56*legs_frame,fw,fh,lookside,false);
+        }
+
+        //              WRIST
+        sb.setColor(skin_color);
+        sb.draw(Assets.getTexture("Player_0_5"),draw_x,draw_y,w/2f,h/2f,w,h,1,1,0,fx+40*hands_frameX,fy+56*hands_frameY+2*y_offset,fw,fh,lookside,false);
+
+        sb.setColor(1,1,1,1);
+        if(fall_animation){
+            legs_frame=5;
+            hands_frameX=2;
+            hands_frameY=1;
+        }else{
+            if(walk_animation){
+                if(timer1>1){
+                    timer1=0;
+
+                    if(legs_frame<6)
+                        legs_frame=6;
+                    else
+                        legs_frame++;
+                    if(legs_frame>19)
+                        legs_frame=6;
+
                 }
+                timer1++;
+
+                hands_frameX=3+(legs_frame<5?0:Math.round((legs_frame-5f)/5));
+                hands_frameY=1;
+            }else{
+                legs_frame=0;
+                hands_frameX=2;
+                hands_frameY=0;
+                counter1=0;
+                timer1=0;
+                timer2=0;
             }
-        }else
-            hframe=frame;
+
+            if(useItem_animation){
+                /*if(useItem){
+                    timer2++;
+                    if(timer2 >3){
+                        timer2 =0;
+
+                        if(legs_frame <1|| legs_frame >4){
+                            legs_frame =1;
+                        }else{
+                            legs_frame++;
+                            if(legs_frame >4)
+                                legs_frame =1;
+                        }
+                    }
+                }*/
+            }
+        }
     }
 
 
