@@ -95,6 +95,8 @@ public class Main implements ApplicationListener{
 			}
 		}
 		Player.updateDrawPosition(map);
+
+		RecursiveLights.dayLight=0.1f;
 	}
 
 
@@ -114,10 +116,20 @@ public class Main implements ApplicationListener{
 		cam.update(sb);
 		sb.begin();
 
+		/*RecursiveLights.dayLight=(float)Math.sin(timer.getMillis()/5000f)*5+1;
+		if(RecursiveLights.dayLight>1)
+			RecursiveLights.dayLight=1;
+		if(RecursiveLights.dayLight<0)
+			RecursiveLights.dayLight=0;
+		RecursiveLights.dayLight+=0.1;
+		if(RecursiveLights.dayLight>1)
+			RecursiveLights.dayLight=1;
+		RecursiveLights.updateScreenLights(map,cam);*/
+
 		if(WorldGenerator.isGenerated){
-			//sb.setColor(1,1-time/100f,1-time/100f,1);
+			sb.setColor(RecursiveLights.dayLight,RecursiveLights.dayLight,RecursiveLights.dayLight,1);
 			sb.draw(Assets.getTexture("Background_0"),cam.x,cam.y,cam.width,cam.height);
-			//sb.setColor(1,1,1,1);
+			sb.setColor(1,1,1,1);
 
 
 			if(shadows_off){
@@ -137,13 +149,23 @@ public class Main implements ApplicationListener{
 					}
 			}
 
+
+			//ShaderProgram shader1=Assets.getShader("map_shader");
+			//shader1.begin();
+			//shader1.setUniformf("u_time",time);
+			//sb.setShader(shader1);
+
 			map.draw(tileManager,sb,cam);
 
+			//shader1.end();
+			//sb.setShader(null);
+
+
 			if(effect){
-				ShaderProgram shader=Assets.getShader("shader");
-				shader.begin();
-				shader.setUniformf("u_force",effect_force);
-				sb.setShader(shader);
+				ShaderProgram shader2=Assets.getShader("shader");
+				shader2.begin();
+				shader2.setUniformf("u_force",effect_force);
+				sb.setShader(shader2);
 
 				map.layer(3).draw(tileManager,sb,cam,effect_x,0);
 				map.layer(3).draw(tileManager,sb,cam,-effect_x,0);
@@ -152,10 +174,21 @@ public class Main implements ApplicationListener{
 				map.layer(2).draw(tileManager,sb,cam,effect_x,0);
 				map.layer(2).draw(tileManager,sb,cam,-effect_x,0);
 
-				shader.end();
+				shader2.end();
 				sb.setShader(null);
 			}
+
+
+			//shader1=Assets.getShader("map_shader");
+			//shader1.begin();
+			//shader1.setUniformf("u_time",time);
+			//sb.setShader(shader1);
+
 			Player.draw(sb,map);
+
+			//shader1.end();
+			//sb.setShader(null);
+
 
 
 			toolBar.draw(sb,cam);
@@ -265,7 +298,7 @@ public class Main implements ApplicationListener{
 			params.add("World size: "+map.layer(3).width+", "+map.layer(3).height);
 			params.add("Tile x: "+tx+", y: "+ty);
 			params.add("Game time: "+hours+":"+minutes);
-			params.add("frame: "+Player.hands_frameX);
+			params.add("Daylight: "+RecursiveLights.dayLight);
 
 			sb.setShader(Assets.getShader("inv_shader"));
 			for(int i=0; i<params.size(); i++)

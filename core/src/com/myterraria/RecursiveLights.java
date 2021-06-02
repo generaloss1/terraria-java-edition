@@ -118,6 +118,10 @@ public class RecursiveLights{
 
 
 
+    public static float dayLight=1;
+
+
+
     public static void updateScreenLights(final TiledMap map,final Camera2D cam){
         if(!inprocess){
             inprocess=true;
@@ -141,12 +145,12 @@ public class RecursiveLights{
                                 if(map.getTileId(ignoreTilesU[i+1],x,y)==ignoreTilesU[i])
                                     b=false;
                             if((map.getTileId(1,x,y)!=0 || map.getTileId(3,x,y)!=0) && b){
-                                RecursiveLights.applyLightRec(map,3,x,y,6,24,1);
-                                RecursiveLights.applyLightRec(map,2,x,y,6,24,1);
-                                RecursiveLights.applyLightRec(map,1,x,y,6,24,1);
+                                RecursiveLights.applyLightRec(map,3,x,y,6,24,dayLight);
+                                RecursiveLights.applyLightRec(map,2,x,y,6,24,dayLight);
+                                RecursiveLights.applyLightRec(map,1,x,y,6,24,dayLight);
                                 break;
                             }else if(map.getTileId(2,x,y)==5)
-                                colormap[2][x][y]=1;
+                                colormap[2][x][y]=dayLight;
                         }
                     }
                     color.set(1,1,1);

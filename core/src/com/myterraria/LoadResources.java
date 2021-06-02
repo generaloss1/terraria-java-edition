@@ -85,6 +85,7 @@ public class LoadResources{
 
         Assets.loadShader("shaders/inv_shader","inv_shader");
         Assets.loadShader("shaders/shader","shader");
+        Assets.loadShader("shaders/map_shader","map_shader");
 
         //PROJECTILES
 
