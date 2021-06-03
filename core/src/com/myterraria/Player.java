@@ -5,13 +5,14 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import engine.Assets;
+import engine.physics.ColissionBody;
 import engine.tiledmap.TiledMap;
 
 public class Player{
 
 
     public int draw_width,draw_height,draw_x,draw_y;
-    public float x,y,width,height;
+    public ColissionBody rect;
     public int timer1,timer2,counter1,legs_frame,hands_frameX,hands_frameY,y_offset,shirt_frameX;
 
     public boolean armor_legs=true,armor=true,armor_head,jump_animation,fall_animation,walk_animation,useItem_animation,lookside;
@@ -21,49 +22,36 @@ public class Player{
 
 
     public Player(TiledMap map,float x,float y,float w,float h){
-        setPosition(x,y,map);
-        width=w;
-        height=h;
-    }
-
-
-    public void setPosition(float px,float py,TiledMap map){
-        x=px;
-        y=py;
+        rect=new ColissionBody(x,y,w,h);
         updateDrawPosition(map);
     }
 
-    public void translatePosition(float tx,float ty,TiledMap map){
-        x+=tx;
-        y+=ty;
+
+    public void setPosition(float x,float y,TiledMap map){
+        rect.setPosition(x,y);
+        updateDrawPosition(map);
+    }
+
+    public void translatePosition(float x,float y,TiledMap map){
+        rect.translate(x,y);
         updateDrawPosition(map);
     }
 
     public void updateDrawPosition(TiledMap map){
-        draw_x=Math.round(map.layer(3).tiles_offset_x*x);
-        draw_y=Math.round(map.layer(3).tiles_offset_y*y);
+        draw_x=Math.round(map.layer(3).tiles_offset_x*rect.x);
+        draw_y=Math.round(map.layer(3).tiles_offset_y*rect.y);
     }
 
     public void draw(SpriteBatch sb,TiledMap map){
         int layer=3;
 
-        draw_width=Math.round(map.layer(layer).tiles_offset_x*width*(40f/(2*16)));
-        draw_height=Math.round(map.layer(layer).tiles_offset_y*height*(52f/(3*16)));
+        draw_width=Math.round(map.layer(layer).tiles_offset_x*rect.width*(40f/(2*16)));
+        draw_height=Math.round(map.layer(layer).tiles_offset_y*rect.height*(52f/(3*16)));
 
         int fw=40;
         int fh=50;
         int fx=0;
         int fy=4;
-
-        if(Gdx.input.isKeyPressed(Input.Keys.Z))
-            fall_animation=true;
-        else
-            fall_animation=false;
-
-        if(Gdx.input.isKeyPressed(Input.Keys.X))
-            jump_animation=true;
-        else
-            jump_animation=false;
 
         if(Gdx.input.isKeyPressed(Input.Keys.C))
             useItem_animation=true;
@@ -99,14 +87,14 @@ public class Player{
 
             //SHIRT
             sb.setColor(1f,1f,1f,1);
-            sb.draw(Assets.getTexture("Player_0_6"),draw_x,draw_y,draw_width/2f,draw_height/2f,draw_width,draw_height,1,1,0,fx+shirt_frameX,fy+2*y_offset,fw,fh,lookside,false);
+            sb.draw(Assets.getTexture("Player_0_6"),draw_x,draw_y,draw_width/2f,draw_height/2f,draw_width,draw_height,1,1,0,fx+40*shirt_frameX,fy+2*y_offset,fw,fh,lookside,false);
 
             //SLEEVE
             sb.setColor(0.4f,0.4f,0.4f,1);
             sb.draw(Assets.getTexture("Player_0_8"),draw_x,draw_y,draw_width/2f,draw_height/2f,draw_width,draw_height,1,1,0,fx+40*hands_frameX,fy+56*hands_frameY+2*y_offset,fw,fh,lookside,false);
         }else{
             sb.setColor(1,1,1,1);
-            sb.draw(Assets.getTexture("Armor_187"),draw_x,draw_y,draw_width/2f,draw_height/2f,draw_width,draw_height,1,1,0,fx+shirt_frameX,fy+2*y_offset,fw,fh,lookside,false);
+            sb.draw(Assets.getTexture("Armor_187"),draw_x,draw_y,draw_width/2f,draw_height/2f,draw_width,draw_height,1,1,0,fx+40*shirt_frameX,fy+2*y_offset,fw,fh,lookside,false);
 
             if(!fall_animation){
                 sb.setColor(1,1,1,1);
@@ -153,11 +141,13 @@ public class Player{
             hands_frameX=3;
             hands_frameY=1;
             shirt_frameX=0;
+            y_offset=0;
         }else if(fall_animation){
             legs_frame=5;
             hands_frameX=2;
             hands_frameY=1;
             shirt_frameX=1;
+            y_offset=0;
         }else{
             shirt_frameX=0;
 
@@ -189,6 +179,7 @@ public class Player{
                 counter1=0;
                 timer1=0;
                 timer2=0;
+                y_offset=0;
             }
 
             if(useItem_animation){

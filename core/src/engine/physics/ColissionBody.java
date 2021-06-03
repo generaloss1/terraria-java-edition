@@ -33,8 +33,8 @@ public class ColissionBody{
     }
 
     public ColissionBody translate(float tx,float ty){
-        x+=x;
-        y+=y;
+        x+=tx;
+        y+=ty;
         return this;
     }
 

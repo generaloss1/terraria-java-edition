@@ -224,7 +224,7 @@ public class Main implements ApplicationListener{
 
 				BitmapFont font2=Assets.getTTF("font2");
 				font2.setColor(1,1,1,timer1/200f);
-				font2.draw(sb,"F3 for more info; F11 for fullscreen; Esc for exit; U,I for night,day; F4,F5 for save,load map; Z,X for more player animations; F7 for disable light;",cam.x+20,cam.y+20+font2.getLineHeight());
+				font2.draw(sb,"F3 for more info; F11 for fullscreen; Esc for exit; U,I for night,day; F4,F5 for save,load map; F7 for disable light;",cam.x+20,cam.y+20+font2.getLineHeight());
 			}
 		}else{
 			BitmapFont font=Assets.getTTF("font1");
@@ -234,7 +234,7 @@ public class Main implements ApplicationListener{
 
 			BitmapFont font2=Assets.getTTF("font2");
 			font2.setColor(1,1,1,timer1/200f);
-			font2.draw(sb,"F3 for more info; F11 for fullscreen; Esc for exit; U,I for night,day; F4,F5 for save,load map; Z,X for more player animations; F7 for disable light;",cam.x+20,cam.y+20+font2.getLineHeight());
+			font2.draw(sb,"F3 for more info; F11 for fullscreen; Esc for exit; U,I for night,day; F4,F5 for save,load map; F7 for disable light;",cam.x+20,cam.y+20+font2.getLineHeight());
 		}
 
 		controls(delt);
@@ -353,11 +353,21 @@ public class Main implements ApplicationListener{
 					Assets.getSound("Mech_0").play();
 				}
 
+
 		float cam_speed=0.3f;
-		if(Gdx.input.isKeyPressed(Input.Keys.W))
+		if(Gdx.input.isKeyPressed(Input.Keys.W)){
 			player.translatePosition(0,cam_speed*delt,map);
-		if(Gdx.input.isKeyPressed(Input.Keys.S))
+			player.jump_animation=true;
+			player.fall_animation=false;
+		}else if(Gdx.input.isKeyPressed(Input.Keys.S)){
 			player.translatePosition(0,-cam_speed*delt,map);
+			player.fall_animation=true;
+			player.jump_animation=false;
+		}else{
+			player.jump_animation=false;
+			player.fall_animation=false;
+		}
+
 		if(Gdx.input.isKeyPressed(Input.Keys.A)){
 			player.translatePosition(-cam_speed*delt,0,map);
 			player.lookside=true;
@@ -368,6 +378,7 @@ public class Main implements ApplicationListener{
 			player.walk_animation=true;
 		}else
 			player.walk_animation=false;
+
 
 		if(Gdx.input.isKeyPressed(Input.Keys.EQUALS) && map.layer(1).tiles_offset_x<=43.76){
 			map.layer(1).tiles_offset_x+=delt/4;
