@@ -89,15 +89,14 @@ public class Main implements ApplicationListener{
 
 		timer=new Timer();
 
-		player=new Player(2,3);
-		player.x=map_width/2f;
+		float px=map_width/2f,py=map_height;
 		for(int y=map.layer(3).height; y>0; y--){
-			if(map.getTileId(3,(int)player.x,y)!=0 || map.getTileId(3,(int)player.x+1,y)!=0){
-				player.y=y+1;
+			if(map.getTileId(3,(int)px,y)!=0 || map.getTileId(3,(int)px+1,y)!=0){
+				py=y+1;
 				break;
 			}
 		}
-		player.updateDrawPosition(map);
+		player=new Player(map,px,py,2,3);
 	}
 
 

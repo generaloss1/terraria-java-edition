@@ -20,7 +20,8 @@ public class Player{
     public Color hair_color=new Color(0.247f,0.152f,0.360f,1);
 
 
-    public Player(float w,float h){
+    public Player(TiledMap map,float x,float y,float w,float h){
+        setPosition(x,y,map);
         width=w;
         height=h;
     }
