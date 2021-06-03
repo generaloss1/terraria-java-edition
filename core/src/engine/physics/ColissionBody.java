@@ -6,7 +6,7 @@ public class ColissionBody{
 
 
     public float x,y,width,height;
-    Vector2f velocity;
+    public Vector2f velocity;
 
 
     public ColissionBody(float x,float y,float w,float h){
@@ -30,6 +30,12 @@ public class ColissionBody{
     public void setPosition(float x,float y){
         this.x=x;
         this.y=y;
+    }
+
+    public ColissionBody translate(Vector2f v){
+        x+=v.x;
+        y+=v.y;
+        return this;
     }
 
     public ColissionBody translate(float tx,float ty){

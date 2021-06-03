@@ -5,6 +5,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import engine.Assets;
+import engine.Camera2D;
+import engine.math.vectors.Vector2f;
 import engine.physics.ColissionBody;
 import engine.tiledmap.TiledMap;
 
@@ -37,10 +39,21 @@ public class Player{
         updateDrawPosition(map);
     }
 
+    public void translatePosition(Vector2f v,TiledMap map){
+        rect.translate(v);
+        updateDrawPosition(map);
+    }
+
     public void updateDrawPosition(TiledMap map){
         draw_x=Math.round(map.layer(3).tiles_offset_x*rect.x);
         draw_y=Math.round(map.layer(3).tiles_offset_y*rect.y);
     }
+
+
+    public void update(TiledMap map,Camera2D cam){
+        translatePosition(rect.velocity,map);
+    }
+
 
     public void draw(SpriteBatch sb,TiledMap map){
         int layer=3;
@@ -93,20 +106,22 @@ public class Player{
             sb.setColor(0.4f,0.4f,0.4f,1);
             sb.draw(Assets.getTexture("Player_0_8"),draw_x,draw_y,draw_width/2f,draw_height/2f,draw_width,draw_height,1,1,0,fx+40*hands_frameX,fy+56*hands_frameY+2*y_offset,fw,fh,lookside,false);
         }else{
+            int armor_id=187;
+
             sb.setColor(1,1,1,1);
-            sb.draw(Assets.getTexture("Armor_187"),draw_x,draw_y,draw_width/2f,draw_height/2f,draw_width,draw_height,1,1,0,fx+40*shirt_frameX,fy+2*y_offset,fw,fh,lookside,false);
+            sb.draw(Assets.getTexture("Armor_"+armor_id),draw_x,draw_y,draw_width/2f,draw_height/2f,draw_width,draw_height,1,1,0,fx+40*shirt_frameX,fy+2*y_offset,fw,fh,lookside,false);
 
             if(!fall_animation){
                 sb.setColor(1,1,1,1);
-                sb.draw(Assets.getTexture("Armor_187"),draw_x,draw_y,draw_width/2f,draw_height/2f,draw_width,draw_height,1,1,0,fx+40*hands_frameX,fy+56*hands_frameY+2*y_offset,fw,fh,lookside,false);
+                sb.draw(Assets.getTexture("Armor_"+armor_id),draw_x,draw_y,draw_width/2f,draw_height/2f,draw_width,draw_height,1,1,0,fx+40*hands_frameX,fy+56*hands_frameY+2*y_offset,fw,fh,lookside,false);
             }
 
             sb.setColor(1,1,1,1);
-            sb.draw(Assets.getTexture("Armor_187"),draw_x,draw_y,draw_width/2f,draw_height/2f,draw_width,draw_height,1,1,0,fx,fy+56+2*y_offset,fw,fh,lookside,false);
+            sb.draw(Assets.getTexture("Armor_"+armor_id),draw_x,draw_y,draw_width/2f,draw_height/2f,draw_width,draw_height,1,1,0,fx,fy+56+2*y_offset,fw,fh,lookside,false);
 
             if(fall_animation){
                 sb.setColor(1,1,1,1);
-                sb.draw(Assets.getTexture("Armor_187"),draw_x,draw_y,draw_width/2f,draw_height/2f,draw_width,draw_height,1,1,0,fx+40*hands_frameX,fy+56*hands_frameY+2*y_offset,fw,fh,lookside,false);
+                sb.draw(Assets.getTexture("Armor_"+armor_id),draw_x,draw_y,draw_width/2f,draw_height/2f,draw_width,draw_height,1,1,0,fx+40*hands_frameX,fy+56*hands_frameY+2*y_offset,fw,fh,lookside,false);
             }
         }
 
@@ -181,11 +196,11 @@ public class Player{
                 timer2=0;
                 y_offset=0;
             }
-
-            if(useItem_animation){
-                y_offset=0;
-            }
         }
+        if(useItem_animation){
+            y_offset=0;
+        }
+
     }
 
 
