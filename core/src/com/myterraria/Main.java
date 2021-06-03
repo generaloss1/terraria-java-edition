@@ -42,6 +42,8 @@ public class Main implements ApplicationListener{
 
 	public Mouse mouse;
 
+	public Player player;
+
 
 
 	public void create(){
@@ -87,16 +89,15 @@ public class Main implements ApplicationListener{
 
 		timer=new Timer();
 
-		Player.x=map_width/2f;
+		player=new Player(2,3);
+		player.x=map_width/2f;
 		for(int y=map.layer(3).height; y>0; y--){
-			if(map.getTileId(3,(int)Player.x,y)!=0){
-				Player.y=y+1;
+			if(map.getTileId(3,(int)player.x,y)!=0 || map.getTileId(3,(int)player.x+1,y)!=0){
+				player.y=y+1;
 				break;
 			}
 		}
-		Player.updateDrawPosition(map);
-
-		RecursiveLights.dayLight=0.1f;
+		player.updateDrawPosition(map);
 	}
 
 
@@ -112,7 +113,7 @@ public class Main implements ApplicationListener{
 		time+=delt;
 		Gdx.gl.glClearColor(0,0,0,1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		cam.lookAt(Player.draw_x-cam.width/2+Player.w/2f,Player.draw_y-cam.height/2+Player.h/2f);
+		cam.lookAt(player.draw_x-cam.width/2+player.draw_width/2f,player.draw_y-cam.height/2+player.draw_height/2f);
 		cam.update(sb);
 		sb.begin();
 
@@ -184,7 +185,7 @@ public class Main implements ApplicationListener{
 			//shader1.setUniformf("u_time",time);
 			//sb.setShader(shader1);
 
-			Player.draw(sb,map);
+			player.draw(sb,map);
 
 			//shader1.end();
 			//sb.setShader(null);
@@ -224,7 +225,7 @@ public class Main implements ApplicationListener{
 
 				BitmapFont font2=Assets.getTTF("font2");
 				font2.setColor(1,1,1,timer1/200f);
-				font2.draw(sb,"F3 for more info; 1/2/3/4/6/0 + LMB for set tile;",cam.x+20,cam.y+20+font2.getLineHeight());
+				font2.draw(sb,"F3 for more info; F11 for fullscreen; Esc for exit; U,I for night,day; F4,F5 for save,load map; Z,X for more player animations; F7 for disable light;",cam.x+20,cam.y+20+font2.getLineHeight());
 			}
 		}else{
 			BitmapFont font=Assets.getTTF("font1");
@@ -234,7 +235,7 @@ public class Main implements ApplicationListener{
 
 			BitmapFont font2=Assets.getTTF("font2");
 			font2.setColor(1,1,1,timer1/200f);
-			font2.draw(sb,"F3 for more info; 1/2/3/4/6/0 + LMB for set tile;",cam.x+20,cam.y+20+font2.getLineHeight());
+			font2.draw(sb,"F3 for more info; F11 for fullscreen; Esc for exit; U,I for night,day; F4,F5 for save,load map; Z,X for more player animations; F7 for disable light;",cam.x+20,cam.y+20+font2.getLineHeight());
 		}
 
 		controls(delt);
@@ -262,6 +263,16 @@ public class Main implements ApplicationListener{
 	public void controls(float delt){
 		int tx=(int)Math.floor((Gdx.input.getX()+cam.x)/map.layer(3).tiles_offset_x);
 		int ty=(int)Math.floor((Gdx.graphics.getHeight()-Gdx.input.getY()+cam.y)/map.layer(3).tiles_offset_y);
+
+		if(Gdx.input.isKeyJustPressed(Input.Keys.U)){
+			RecursiveLights.dayLight=0.1f;
+			RecursiveLights.updateScreenLights(map,cam);
+		}
+
+		if(Gdx.input.isKeyJustPressed(Input.Keys.I)){
+			RecursiveLights.dayLight=1f;
+			RecursiveLights.updateScreenLights(map,cam);
+		}
 
 		if(Gdx.input.isKeyJustPressed(Input.Keys.F))
 			effect=true;
@@ -345,19 +356,19 @@ public class Main implements ApplicationListener{
 
 		float cam_speed=0.3f;
 		if(Gdx.input.isKeyPressed(Input.Keys.W))
-			Player.translatePosition(0,cam_speed*delt,map);
+			player.translatePosition(0,cam_speed*delt,map);
 		if(Gdx.input.isKeyPressed(Input.Keys.S))
-			Player.translatePosition(0,-cam_speed*delt,map);
+			player.translatePosition(0,-cam_speed*delt,map);
 		if(Gdx.input.isKeyPressed(Input.Keys.A)){
-			Player.translatePosition(-cam_speed*delt,0,map);
-			Player.lookside=true;
-			Player.walk_animation=true;
+			player.translatePosition(-cam_speed*delt,0,map);
+			player.lookside=true;
+			player.walk_animation=true;
 		}else if(Gdx.input.isKeyPressed(Input.Keys.D)){
-			Player.translatePosition(cam_speed*delt,0,map);
-			Player.lookside=false;
-			Player.walk_animation=true;
+			player.translatePosition(cam_speed*delt,0,map);
+			player.lookside=false;
+			player.walk_animation=true;
 		}else
-			Player.walk_animation=false;
+			player.walk_animation=false;
 
 		if(Gdx.input.isKeyPressed(Input.Keys.EQUALS) && map.layer(1).tiles_offset_x<=43.76){
 			map.layer(1).tiles_offset_x+=delt/4;
@@ -367,7 +378,7 @@ public class Main implements ApplicationListener{
 			map.layer(1).tiles_offset_y+=delt/4;
 			map.layer(2).tiles_offset_y+=delt/4;
 			map.layer(3).tiles_offset_y+=delt/4;
-			Player.updateDrawPosition(map);
+			player.updateDrawPosition(map);
 		}
 		if(Gdx.input.isKeyPressed(Input.Keys.MINUS) && map.layer(1).tiles_offset_x>=21.78){
 			map.layer(1).tiles_offset_x-=delt/4;
@@ -377,7 +388,7 @@ public class Main implements ApplicationListener{
 			map.layer(1).tiles_offset_y-=delt/4;
 			map.layer(2).tiles_offset_y-=delt/4;
 			map.layer(3).tiles_offset_y-=delt/4;
-			Player.updateDrawPosition(map);
+			player.updateDrawPosition(map);
 		}
 
 		/*for(int i=0; i<256; i++){

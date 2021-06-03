@@ -1,6 +1,5 @@
 package engine.math;
 
-import com.badlogic.gdx.math.MathUtils;
 import engine.math.vectors.*;
 
 import java.awt.*;
@@ -187,9 +186,13 @@ public class Maths{
 
 
 
-      public static boolean overlaps(Rectangle r1,Rectangle r2){
+    public static boolean overlaps(Rectangle r1,Rectangle r2){
         return r1.x<r2.x+r2.width && r1.x+r1.width>r2.x && r1.y<r2.y+r2.height && r1.y+r1.height>r2.y;
-      }
+    }
+
+    public static boolean overlaps(float x1,float y1,float w1,float h1,float x2,float y2,float w2,float h2){
+        return x1<x2+w2 && x1+w1>x2 && y1<y2+h2 && y1+h1>y2;
+    }
 
 
 

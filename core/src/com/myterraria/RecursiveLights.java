@@ -32,6 +32,13 @@ public class RecursiveLights{
     }
 
     public static void addLight(int x,int y,int t,int a){
+        for(int i=0; i<lights.size(); i++){
+            int[] lg=lights.get(i);
+            if(lg[0]==x && lg[1]==y){
+                lights.remove(i);
+                break;
+            }
+        }
         lights.add(new int[]{x,y,t,a});
     }
 
