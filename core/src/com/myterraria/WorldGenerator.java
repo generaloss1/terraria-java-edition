@@ -193,7 +193,14 @@ public class WorldGenerator{
                 Main.timer.start();
                 Main.timer.setMinutes(12);
                 isGenerated=true;
-
+                float px=map.layer(3).width/2f,py=0;
+                for(int y=map.layer(3).height; y>0; y--){
+                    if(map.getTileId(3,(int)px,y)!=0 || map.getTileId(3,(int)px+1,y)!=0){
+                        py=y+1;
+                        break;
+                    }
+                }
+                Main.player.rect.setPosition(px,py);
             }
         });
         thread.start();

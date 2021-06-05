@@ -10,20 +10,20 @@ public class ColissionBody{
 
 
     public ColissionBody(float x,float y,float w,float h){
+        velocity=new Vector2f();
         this.x=x;
         this.y=y;
         width=w;
         height=h;
-
-        velocity=new Vector2f();
     }
 
     public ColissionBody(ColissionBody b){
-        this.x=b.x;
-        this.y=b.y;
-        this.width=b.width;
-        this.height=b.height;
-        this.velocity.set(b.velocity);
+        velocity=new Vector2f();
+        x=b.x;
+        y=b.y;
+        width=b.width;
+        height=b.height;
+        velocity.set(b.velocity);
     }
 
 

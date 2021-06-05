@@ -7,8 +7,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import engine.Assets;
 import engine.Camera2D;
 import engine.math.vectors.Vector2f;
+import engine.math.vectors.Vector2i;
 import engine.physics.ColissionBody;
+import engine.physics.Collider;
 import engine.tiledmap.TiledMap;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Player{
 
@@ -39,7 +44,7 @@ public class Player{
         updateDrawPosition(map);
     }
 
-    public void translatePosition(Vector2f v,TiledMap map){
+    private void translatePosition(Vector2f v,TiledMap map){
         rect.translate(v);
         updateDrawPosition(map);
     }
@@ -51,7 +56,32 @@ public class Player{
 
 
     public void update(TiledMap map,Camera2D cam){
-        translatePosition(rect.velocity,map);
+        int x=Math.round(rect.x);
+        int y=Math.round(rect.y);
+        int vx=Math.round(rect.velocity.x);
+        int vy=Math.round(rect.velocity.y);
+        List<ColissionBody> list=new ArrayList<>();
+
+        for(int i=x+Math.min(vx,0)-1; i<x+rect.width+Math.max(0,vx)+1; i++){
+            for(int j=y+Math.min(vy,0)-1; j<y+rect.height+Math.max(0,vy)+1; j++){
+                if(map.layer(3).inBounds(i,j)){
+                    int t=map.layer(3).getTileId(i,j);
+                    if(t!=0 && t!=4){
+                        list.add(new ColissionBody(i*100,j*100,100,100));
+                    }
+                }
+            }
+        }
+        float hbwk=34f/40;
+        float hbhk=46f/48/8;
+
+        ColissionBody b=new ColissionBody(rect.x*100+hbwk*50,rect.y*100+hbhk*100,rect.width*100*hbwk,rect.height*100-100*hbhk);
+        b.velocity.set(rect.velocity).mul(100);
+
+        Vector2f v=Collider.calc(b,list);
+        v.div(100);
+
+        translatePosition(v,map);
     }
 
 

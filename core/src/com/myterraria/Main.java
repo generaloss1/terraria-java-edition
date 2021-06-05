@@ -42,7 +42,7 @@ public class Main implements ApplicationListener{
 
 	public Mouse mouse;
 
-	public Player player;
+	public static Player player;
 
 
 
@@ -89,14 +89,8 @@ public class Main implements ApplicationListener{
 
 		timer=new Timer();
 
-		float px=map_width/2f,py=map_height;
-		for(int y=map.layer(3).height; y>0; y--){
-			if(map.getTileId(3,(int)px,y)!=0 || map.getTileId(3,(int)px+1,y)!=0){
-				py=y+1;
-				break;
-			}
-		}
-		player=new Player(map,px,py,2,3);
+
+		player=new Player(map,map_width/2f,surface,2,3);
 	}
 
 
@@ -309,7 +303,7 @@ public class Main implements ApplicationListener{
 			params.add("World size: "+map.layer(3).width+", "+map.layer(3).height);
 			params.add("Tile x: "+tx+", y: "+ty);
 			params.add("Game time: "+hours+":"+minutes);
-			params.add("Daylight: "+RecursiveLights.dayLight);
+			params.add("Player velocity x: "+player.rect.velocity.x+" y: "+player.rect.velocity.y);
 
 			sb.setShader(Assets.getShader("inv_shader"));
 			for(int i=0; i<params.size(); i++)
