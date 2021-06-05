@@ -352,16 +352,17 @@ public class Main implements ApplicationListener{
 		float cam_speed=0.01f;
 		if(Gdx.input.isKeyPressed(Input.Keys.W)){
 			player.rect.velocity.y+=cam_speed*delt;
-			player.jump_animation=true;
-			player.fall_animation=false;
+		//	player.jump_animation=true;
+		//	player.fall_animation=false;
 		}else if(Gdx.input.isKeyPressed(Input.Keys.S)){
 			player.rect.velocity.y-=cam_speed*delt;
-			player.fall_animation=true;
-			player.jump_animation=false;
-		}else{
-			player.jump_animation=false;
-			player.fall_animation=false;
+		//	player.fall_animation=true;
+		//	player.jump_animation=false;
 		}
+		//else{
+		//	player.jump_animation=false;
+		//	player.fall_animation=false;
+		//}
 
 		if(Gdx.input.isKeyPressed(Input.Keys.A)){
 			player.rect.velocity.x-=cam_speed*delt;
@@ -369,10 +370,11 @@ public class Main implements ApplicationListener{
 			player.walk_animation=true;
 		}else if(Gdx.input.isKeyPressed(Input.Keys.D)){
 			player.rect.velocity.x+=cam_speed*delt;
-			player.lookside=false;
-			player.walk_animation=true;
-		}else
-			player.walk_animation=false;
+		//	player.lookside=false;
+		//	player.walk_animation=true;
+		}
+		//else
+		//	player.walk_animation=false;
 
 
 		if(Gdx.input.isKeyPressed(Input.Keys.EQUALS) && map.layer(1).tiles_offset_x<=43.76){

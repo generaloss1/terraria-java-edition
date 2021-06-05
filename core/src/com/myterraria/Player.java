@@ -60,28 +60,64 @@ public class Player{
         int y=Math.round(rect.y);
         int vx=Math.round(rect.velocity.x);
         int vy=Math.round(rect.velocity.y);
-        List<ColissionBody> list=new ArrayList<>();
-
+        List<ColissionBody> b2=new ArrayList<>();
         for(int i=x+Math.min(vx,0)-1; i<x+rect.width+Math.max(0,vx)+1; i++){
             for(int j=y+Math.min(vy,0)-1; j<y+rect.height+Math.max(0,vy)+1; j++){
                 if(map.layer(3).inBounds(i,j)){
                     int t=map.layer(3).getTileId(i,j);
                     if(t!=0 && t!=4){
-                        list.add(new ColissionBody(i*100,j*100,100,100));
+                        b2.add(new ColissionBody(i*100,j*100,100,100));
                     }
                 }
             }
         }
         float hbwk=34f/40;
         float hbhk=46f/48/8;
-
         ColissionBody b=new ColissionBody(rect.x*100+hbwk*50,rect.y*100+hbhk*100,rect.width*100*hbwk,rect.height*100-100*hbhk);
         b.velocity.set(rect.velocity).mul(100);
-
-        Vector2f v=Collider.calc(b,list);
+        Vector2f v=Collider.calc(b,b2);
         v.div(100);
-
         translatePosition(v,map);
+
+        if(rect.velocity.x>0)
+            lookside=false;
+        else if(rect.velocity.x<0)
+            lookside=true;
+
+        if(Collider.isCollisionDown(b,b2)){
+            jump_animation=false;
+            fall_animation=false;
+            if(rect.velocity.y<0)
+                rect.velocity.y=0;
+            if(rect.velocity.x!=0)
+                walk_animation=true;
+            else
+                walk_animation=false;
+        }else{
+            walk_animation=false;
+            if(rect.velocity.y>0){
+                jump_animation=true;
+                fall_animation=false;
+            }else if(rect.velocity.y<0){
+                fall_animation=true;
+                jump_animation=false;
+            }else{
+                fall_animation=false;
+                jump_animation=false;
+            }
+        }
+        if(Collider.isCollisionUp(b,b2)){
+            if(rect.velocity.y>0)
+                rect.velocity.y=0;
+        }
+        if(Collider.isCollisionRight(b,b2)){
+            if(rect.velocity.x>0)
+                rect.velocity.x=0;
+        }
+        if(Collider.isCollisionLeft(b,b2)){
+            if(rect.velocity.x<0)
+                rect.velocity.x=0;
+        }
     }
 
 
