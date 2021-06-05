@@ -178,7 +178,7 @@ public class Main implements ApplicationListener{
 			//shader1.setUniformf("u_time",time);
 			//sb.setShader(shader1);
 
-			player.draw(sb,map);
+			player.draw(sb,map,delt);
 
 			//shader1.end();
 			//sb.setShader(null);
@@ -232,7 +232,7 @@ public class Main implements ApplicationListener{
 		}
 
 		controls(delt);
-		player.update(map,cam);
+		player.update(map,cam,delt);
 
 		sb.end();
 
@@ -304,6 +304,7 @@ public class Main implements ApplicationListener{
 			params.add("Tile x: "+tx+", y: "+ty);
 			params.add("Game time: "+hours+":"+minutes);
 			params.add("Player velocity x: "+player.rect.velocity.x+" y: "+player.rect.velocity.y);
+			params.add("Jump: "+player.jump);
 
 			sb.setShader(Assets.getShader("inv_shader"));
 			for(int i=0; i<params.size(); i++)
@@ -347,35 +348,6 @@ public class Main implements ApplicationListener{
 					toolBar.selected_cell_position=i;
 					Assets.getSound("Mech_0").play();
 				}
-
-
-		float cam_speed=0.01f;
-		if(Gdx.input.isKeyPressed(Input.Keys.W)){
-			player.rect.velocity.y+=cam_speed*delt;
-		//	player.jump_animation=true;
-		//	player.fall_animation=false;
-		}else if(Gdx.input.isKeyPressed(Input.Keys.S)){
-			player.rect.velocity.y-=cam_speed*delt;
-		//	player.fall_animation=true;
-		//	player.jump_animation=false;
-		}
-		//else{
-		//	player.jump_animation=false;
-		//	player.fall_animation=false;
-		//}
-
-		if(Gdx.input.isKeyPressed(Input.Keys.A)){
-			player.rect.velocity.x-=cam_speed*delt;
-			player.lookside=true;
-			player.walk_animation=true;
-		}else if(Gdx.input.isKeyPressed(Input.Keys.D)){
-			player.rect.velocity.x+=cam_speed*delt;
-		//	player.lookside=false;
-		//	player.walk_animation=true;
-		}
-		//else
-		//	player.walk_animation=false;
-
 
 		if(Gdx.input.isKeyPressed(Input.Keys.EQUALS) && map.layer(1).tiles_offset_x<=43.76){
 			map.layer(1).tiles_offset_x+=delt/4;

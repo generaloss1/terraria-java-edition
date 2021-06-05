@@ -124,8 +124,11 @@ public class RecursiveLights{
                                 RecursiveLights.applyLightRec(map,2,x,y,6,24,dayLight);
                                 RecursiveLights.applyLightRec(map,1,x,y,6,24,dayLight);
                                 break;
-                            }else if(map.getTileId(2,x,y)==5)
+                            }else{
+                                colormap[1][x][y]=dayLight;
                                 colormap[2][x][y]=dayLight;
+                                colormap[3][x][y]=dayLight;
+                            }
                         }
                     }
                     color.set(1,1,1);

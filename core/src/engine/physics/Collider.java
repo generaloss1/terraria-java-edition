@@ -36,16 +36,48 @@ public class Collider{
         return overlaps(new ColissionBody(b1).translate(1,0),b2);
     }
 
+    public static boolean isCollisionRightUp(ColissionBody b1,List<ColissionBody> b2){
+        return overlaps(new ColissionBody(b1).translate(1,1),b2);
+    }
+
+    public static boolean isCollisionRightDown(ColissionBody b1,List<ColissionBody> b2){
+        return overlaps(new ColissionBody(b1).translate(1,-1),b2);
+    }
+
     public static boolean isCollisionLeft(ColissionBody b1,List<ColissionBody> b2){
         return overlaps(new ColissionBody(b1).translate(-1,0),b2);
+    }
+
+    public static boolean isCollisionLeftUp(ColissionBody b1,List<ColissionBody> b2){
+        return overlaps(new ColissionBody(b1).translate(-1,1),b2);
+    }
+
+    public static boolean isCollisionLeftDown(ColissionBody b1,List<ColissionBody> b2){
+        return overlaps(new ColissionBody(b1).translate(-1,-1),b2);
     }
 
     public static boolean isCollisionUp(ColissionBody b1,List<ColissionBody> b2){
         return overlaps(new ColissionBody(b1).translate(0,1),b2);
     }
 
+    public static boolean isCollisionUpRight(ColissionBody b1,List<ColissionBody> b2){
+        return overlaps(new ColissionBody(b1).translate(1,1),b2);
+    }
+
+    public static boolean isCollisionUpLeft(ColissionBody b1,List<ColissionBody> b2){
+        return overlaps(new ColissionBody(b1).translate(-1,1),b2);
+    }
+
     public static boolean isCollisionDown(ColissionBody b1,List<ColissionBody> b2){
         return overlaps(new ColissionBody(b1).translate(0,-1),b2);
+    }
+
+    public static boolean isCollisionDownRight(ColissionBody b1,List<ColissionBody> b2){
+        return overlaps(new ColissionBody(b1).translate(1,-1),b2);
+    }
+
+    public static boolean isCollisionDownLeft(ColissionBody b1,List<ColissionBody> b2){
+        return overlaps(new ColissionBody(b1).translate(-1,-1),b2);
     }
 
     static Vector2f slide(ColissionBody b1,List<ColissionBody> b2,float vx,float vy,int cx,int cy){
